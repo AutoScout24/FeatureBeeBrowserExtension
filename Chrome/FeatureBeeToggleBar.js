@@ -23,14 +23,11 @@
             console.log("Actives:");
             console.log(filteredToggles);
 
-            if (filteredToggles.length == 0) {
-                var noToggle = document.createElement('div');
-                noToggle.className = "toggle-bar-toggle-name";
-                noToggle.innerText = "There's Toggle On for you right now";
-                bar.appendChild(noToggle);
+            if (filteredToggles.length == 0) {                
+                addToggle("No toggles are on in your browser", bar, "none");
             } else {
                 for (var i in filteredToggles) {
-                    addActiveToggle(filteredToggles[i].name, bar);
+                    addToggle(filteredToggles[i].name, bar);
                 }
             }
 
@@ -57,7 +54,7 @@
     };
     
     function createBar() {
-        var container = document.createElement('div');
+        var container = document.createElement('ul');
         container.id = barId;
         container.className = "toggle-bar-container";
         container.style.height = '30px';
@@ -66,17 +63,27 @@
         return container;
     };
 
-    function addActiveToggle(name, bar) {
-        var toggleContainer = document.createElement('div');
+    function addToggle(name, bar, icon) {
+        var toggleIcon;
+
+        switch (icon) {
+            case "none":
+                toggleIcon = "";
+                break;
+            default:
+                toggleIcon = "&#10003;";
+        }
+       
+        var toggleContainer = document.createElement('li');
         toggleContainer.className = "toggle-bar-toggle-container";
         
-        var toggleNameSpan = document.createElement('div');
+        var toggleNameSpan = document.createElement('span');
         toggleNameSpan.className = "toggle-bar-toggle-name";
         toggleNameSpan.innerText = name;
 
-        var toggleTickSpan = document.createElement('div');
+        var toggleTickSpan = document.createElement('span');
         toggleTickSpan.className = "toggle-bar-tick";
-        toggleTickSpan.innerHTML = "&#10003;";
+        toggleTickSpan.innerHTML = toggleIcon;
 
         toggleTickSpan.appendChild(toggleNameSpan);
         toggleContainer.appendChild(toggleTickSpan);
@@ -84,14 +91,14 @@
     }
 
     function createHeader() {
-        var headerContainer = document.createElement('div');
+        var headerContainer = document.createElement('li');
         headerContainer.style.display = 'inline-block';
         headerContainer.style.width = "170px";
 
-        var headerImage = document.createElement('div');
+        var headerImage = document.createElement('span');
         headerImage.className = "toggle-bar-img-header";
 
-        var headerTitle = document.createElement('div');
+        var headerTitle = document.createElement('span');
         headerTitle.className = "toggle-bar-header_title";
         headerTitle.innerText = "Feature Bee   | ";
 
