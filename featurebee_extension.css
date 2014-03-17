@@ -1,0 +1,75 @@
+﻿body {
+    width: 450px;
+    border: 1px black solid;
+    font-family: Verdana;
+    font-size: 14px;
+}
+
+.container {
+    display: table;
+}
+
+.header {
+    width: 100%;
+    padding-left: 4px;
+}
+
+.header_img {
+    display: table-cell;
+}
+
+.header_title {
+    display: table-cell;
+    font-family: 'Arial', cursive;
+    font-size: 32px;
+    color: #000;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+}
+
+.container_row {
+    display: table-row
+}
+
+.container_cell {
+    display: table-cell
+}
+
+.options_bar {
+    background-color: lightgrey;
+    margin-left: 9px;
+    margin-right: 9px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    padding-left: 4px;
+}
+
+.toggle_bar {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding-top: 8px;
+    margin-left: 9px;
+    padding-bottom: 8px;
+    border: lightgray 2px solid;
+    width: 95%;
+}
+
+.toggle {
+    padding: 4px 8px 4px 4px;
+    vertical-align: middle;
+}
+
+.toggle_text {
+    vertical-align: middle;
+    padding-left: 6px;
+}
+
+.styled_select{
+   min-width: 150px;
+   height: 25px;
+   overflow: hidden;
+   background: lightgray;
+   border: 1px solid #fff;
+    float: right;
+}

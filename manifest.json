@@ -1,0 +1,30 @@
+{
+  "name": "Feature Bee",
+  "version": "1.0",
+  "description": "A browser action to toggle feature bee features",
+  "permissions": [
+    "activeTab", 
+	"tabs", 	 
+	"http://*/*", 
+	"https://*/*", 
+	"storage"
+  ],
+  "browser_action": {
+      "default_title": "My Bookmarks",
+      "default_icon": "bee.png",
+      "default_popup": "popup.html"
+  },
+  "icons": { "16": "bee.png",
+             "48": "bee.png",
+             "128": "bee.png" 
+  },
+   "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["FeatureBeeTogglesExtensionStorage.js", "FeatureBeeToggleRepository.js", "FeatureBeeToggleExtensionController.js", "FeatureBeeToggleBar.js", "content_scripts.js"],
+	  "css" : ["toggle_bar.css"]
+    }
+  ],
+  "manifest_version": 2,
+  "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'"
+}
