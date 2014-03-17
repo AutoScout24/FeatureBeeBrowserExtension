@@ -73,3 +73,64 @@
    border: 1px solid #fff;
     float: right;
 }
+
+.toggle_status_container {
+    vertical-align: top;
+    padding-top: 3px;
+    width: 22px;
+}
+
+.toggle_status_item {
+    width: 15px;
+    height: 15px;
+    border-radius: 30%;    
+    color: white;
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 2px 3px 2px #888888;
+}
+
+.toggle_status_development {
+    background-color: lightgreen;
+    border: darkgreen 1px solid;
+    color: darkgreen;
+}
+.toggle_status_development:after{
+    content: "D";
+}
+
+.toggle_status_under_test {
+    background-color: yellow;
+    border: darkgoldenrod 1px solid;
+    color: darkgoldenrod;
+}
+
+.toggle_status_under_test:after{  
+    content: "T";
+}
+
+.toggle_status_released {
+    background-color: lightblue;
+    border: darkblue 1px solid;
+    color: darkblue;
+}
+
+.toggle_status_released:after{
+    content: "R";
+}
+
+.toggle_status_subtitles {
+    list-style: none;
+    display: inline;
+    padding-left: 10px;
+    vertical-align: middle;
+}
+.toggle_status_subtitles div, .toggle_status_subtitles label{    
+    display: inline-block;
+}
+
+.toggle_status_subtitles label {
+    font-size: 14px;
+}

@@ -47,7 +47,9 @@
         var toggleDiv = createDiv("toggle");
         var switchDiv = createSwitchDiv(toggle);
         var toggleNameDiv = createToggleNameDiv(toggle.name);
+        var toggleStatus = createToggleStatusDiv(toggle.status);
 
+        toggleDiv.appendChild(toggleStatus);
         toggleDiv.appendChild(switchDiv);
         toggleDiv.appendChild(toggleNameDiv);
 
@@ -97,6 +99,30 @@
         return div;
     }
 
+    function createToggleStatusDiv(status) {
+        var className;
+
+        switch (status) {
+            case "In Development":
+                className = "toggle_status_development";
+                break;
+            case "Under Test":
+                className = "toggle_status_under_test";
+                break;
+            case "Released":
+                className = "toggle_status_released";
+                break;
+            default:
+                className = "";
+        }
+
+        var statusContainer = createDiv("container_cell toggle_status_container");
+        var statusDiv = createDiv("toggle_status_item " + className);
+        statusContainer.appendChild(statusDiv);
+
+        return statusContainer;
+    }
+
     function createSwitchDiv(toggle) {
         var div = createDiv("onoffswitch container_cell");
 
@@ -107,6 +133,7 @@
         checkbox.checked = toggle.isActive;
         checkbox.className = "onoffswitch-checkbox";
         checkbox.myToggle = toggle;
+        div.style.marginLeft = "4px";
 
         checkbox.addEventListener('change', function () {
             toggleController.updateToggleStatus(toggle, checkbox.checked);

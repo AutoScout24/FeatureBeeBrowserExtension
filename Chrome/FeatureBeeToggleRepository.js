@@ -25,14 +25,14 @@
                 id: 3,
                 name: "I'm a toggle and I feel goooood",
                 isActive: true,
-                status: "In Development",
+                status: "Released",
                 team: "ASM Endkunde"
             },
             {
                 id: 4,
                 name: "I'm a toggle on vacation. That's why I'm set to off. In addition, i have a very very long name.",
                 isActive: false,
-                status: "Under test",
+                status: "Under Test",
                 team: "ASM Endkunde"
             }
             ];
@@ -43,8 +43,13 @@
             for (var i in overwrittenToggles) {
                 var toggle = overwrittenToggles[i];
                 for (var t in currentToggles) {
-                    if (currentToggles[t].id == toggle.id) {
-                        currentToggles[t] = toggle;
+                    var currentToggle = currentToggles[t];
+                    if (currentToggle.id == toggle.id) {
+                        if (currentToggle.status != toggle.status) {
+                            FeatureBeeTogglesExtensionStorage.persistTogglePersonalConfig(toggle);
+                        } else {
+                            currentToggles[t] = toggle;
+                        }                        
                     }
                 }
             }
