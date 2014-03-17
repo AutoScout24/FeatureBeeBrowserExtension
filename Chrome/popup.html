@@ -6,60 +6,76 @@
         <link href="on_off_button.css" rel="stylesheet" />
         <link href="toggle_bar.css" rel="stylesheet" />
     </head>
-    <body class="container">
-        <div class="container_row">
+    <body>
+        <div id="togglesContainer" class="container">
+            <div class="container_row">
+                <div class="header">
+                    <div class="header_img">
+                        <img src="bee.png" />
+                    </div>
+                    <div class="header_title">
+                        Feature Bee Toggles
+                    </div>
+                </div>
+                <div id="options" class="options_bar">
+                    <div>
+                        <div class="container_cell" style="width: 200px; white-space: nowrap">
+                            <label><input type="checkbox" id="showToggleBar" /> Show toggles bar</label>
+                        </div>
+                        <div class="container_cell" style="width: 50%; text-align: right">
+                            <label><input type="checkbox" id="autoRefresh" checked /> Auto Refresh</label>
+                        </div>
+                    </div>
+                </div>
+                <div id="toggles" class="toggle_bar container">
+                    <div id="filter" class="toggle" style="padding-bottom: 30px">
+                        <div style="padding-right: 3px; width: 100%;">
+                            <div style="float: right; width: 100%">
+                                <select id="filterSelect" class="styled_select">
+                                    <option value="">Show all toggles</option>
+                                    <option value="Dealer">Show only Dealer Toggles</option>
+                                    <option value="ASM Endkunde">Show only ASM Endkunde Toggles</option>
+                                    <option value="ASM Werkstatt">Show only ASM Werkstatt Toggles</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="options_bar" style="margin-bottom: 10px">
+                    <ul style="margin: 0">
+                        <li class="toggle_status_subtitles">
+                            <div class="toggle_status_item toggle_status_development"></div>
+                            <label>In Development</label>
+                        </li>
+                        <li class="toggle_status_subtitles">
+                            <div class="toggle_status_item toggle_status_under_test"></div>
+                            <label>Under Test</label>
+                        </li>
+                        <li class="toggle_status_subtitles">
+                            <div class="toggle_status_item toggle_status_released"></div>
+                            <label>Released</label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>   
+        <div id="noToggleActiveMessage" style="display: none">
             <div class="header">
                 <div class="header_img">
                     <img src="bee.png" />
                 </div>
                 <div class="header_title">
-                    Feature Bee Toggles
+                    Buzzzzzzzzzz!!
                 </div>
             </div>
-            <div id="options" class="options_bar">
-                <div>
-                    <div class="container_cell" style="width: 50%">
-                        <label><input type="checkbox" id="showToggleBar" /> Show toggles bar</label>
-                    </div>
-                    <div class="container_cell" style="width: 50%; text-align: right">
-                        <label><input type="checkbox" id="autoRefresh" checked /> Auto Refresh</label>
-                    </div>
-                </div>            
-            </div>
-            <div id="toggles" class="toggle_bar container">
-                <div id="filter" class="toggle" style="padding-bottom: 30px">
-                    <div style="padding-right: 3px; width: 100%;">
-                        <div style="float: right; width: 100%">
-                            <select id="filterSelect" class="styled_select">
-                                <option value="">Show all toggles</option>
-                                <option value="Dealer">Show only Dealer Toggles</option>
-                                <option value="ASM Endkunde">Show only ASM Endkunde Toggles</option>
-                                <option value="ASM Werkstatt">Show only ASM Werkstatt Toggles</option>
-                            </select>
-                        </div>                    
-                    </div>
-                </div>
-            </div>
-            <div class="options_bar" style="margin-bottom: 10px">
-                <ul style="margin: 0">
-                    <li class="toggle_status_subtitles">
-                        <div class="toggle_status_item toggle_status_development"></div>
-                        <label>In Development</label>
-                    </li>
-                    <li class="toggle_status_subtitles">
-                        <div class="toggle_status_item toggle_status_under_test"></div>
-                        <label>Under Test</label>
-                    </li>
-                    <li class="toggle_status_subtitles">
-                        <div class="toggle_status_item toggle_status_released"></div>
-                        <label>Released</label>
-                    </li>
-                </ul>
-            </div>
+            <div class="no_toggle_active_message">
+                The current page is not recognized as a Feature Bee active environment
+            </div>            
         </div>
-    </body>
+</body>
 </html>
 <script src="FeatureBeeTogglesExtensionStorage.js"></script>
+<script src="Environments.js"></script>
 <script src="FeatureBeeToggleRepository.js"></script>
 <script src="FeatureBeeToggleExtensionController.js"></script>
 

@@ -134,3 +134,10 @@
 .toggle_status_subtitles label {
     font-size: 14px;
 }
+
+.no_toggle_active_message {
+    padding: 30px;
+    color: red;
+    font-size: 18px;
+    text-align: center;
+}

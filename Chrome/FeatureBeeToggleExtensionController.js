@@ -184,6 +184,13 @@
 
     var init = function () {
 
+        chrome.tabs.query({ currentWindow: true, active: true }, function (currentTab) {
+            if (!FeatureBeeToggleActiveEnviroments.isToggleActiveEnvironment(currentTab[0].url)) {                
+                document.getElementById("noToggleActiveMessage").style.display = "block";
+                document.getElementById("togglesContainer").style.display = "none";
+            }
+        });
+
         FeatureBeeTogglesExtensionStorage.getToggleBarStatus(function (isActive) {
             showToggleBarCheckbox.checked = isActive;
         });

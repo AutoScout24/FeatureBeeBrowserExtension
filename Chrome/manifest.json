@@ -3,6 +3,7 @@
   "version": "1.0",
   "description": "A browser action to toggle feature bee features",
   "permissions": [
+	"tabs",
     "activeTab", 
 	"tabs", 	 
 	"http://*/*", 
@@ -21,7 +22,7 @@
    "content_scripts": [
     {
       "matches": ["*://*/*"],
-      "js": ["FeatureBeeTogglesExtensionStorage.js", "FeatureBeeToggleRepository.js", "FeatureBeeToggleExtensionController.js", "FeatureBeeToggleBar.js", "content_scripts.js"],
+      "js": ["FeatureBeeTogglesExtensionStorage.js", "Environments.js", "FeatureBeeToggleRepository.js", "FeatureBeeToggleExtensionController.js", "FeatureBeeToggleBar.js", "content_scripts.js"],
 	  "css" : ["toggle_bar.css"]
     }
   ],

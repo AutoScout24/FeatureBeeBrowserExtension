@@ -62,6 +62,7 @@
     <Content Include="Chrome\bee_24.png" />
     <Content Include="Chrome\bee_48.png" />
     <Content Include="Chrome\content_scripts.js" />
+    <Content Include="Chrome\Environments.js" />
     <Content Include="Chrome\FeatureBeeToggleBar.js" />
     <Content Include="Chrome\FeatureBeeToggleExtensionController.js" />
     <Content Include="Chrome\FeatureBeeToggleInitiator.js" />
