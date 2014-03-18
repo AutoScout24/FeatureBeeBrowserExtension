@@ -9,25 +9,17 @@
 
     this.show = function () {
         
-        FeatureBeeToggleRepository.retrieveCurrentToggles(function (toggles) {
+        FeatureBeeToggleRepository.retrieveCurrentActiveToggles(function (toggles) {
             var bar = createBar();
 
-            var filteredToggles = [];
-
-            for (var a in toggles) {
-                if (toggles[a].isActive) {
-                    filteredToggles.push(toggles[a]);
-                }
-            }
-
             console.log("Actives:");
-            console.log(filteredToggles);
+            console.log(toggles);
 
-            if (filteredToggles.length == 0) {                
+            if (toggles.length == 0) {
                 addToggle("No toggles are on in your browser", bar, "none");
             } else {
-                for (var i in filteredToggles) {
-                    addToggle(filteredToggles[i].name, bar);
+                for (var i in toggles) {
+                    addToggle(toggles[i].name, bar);
                 }
             }
 
