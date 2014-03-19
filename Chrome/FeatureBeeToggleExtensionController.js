@@ -1,53 +1,42 @@
-﻿function FeatureBeeToggleExtensionController(){
+﻿FeatureBeeToggleExtensionController = new function() {
+
+    var currentToggles = null;
     
     var toggleListObj = document.querySelector('#toggles');
     var showToggleBarCheckbox = document.getElementById("showToggleBar");
     var autoRefreshLastStatusCheckbox = document.getElementById("autoRefresh");
     var filterObj = document.getElementById("filterSelect");
 
-    this.refreshToggles = function () {
-        FeatureBeeToggleRepository.retrieveCurrentToggles(buildTogglesList);
-        console.log("Toggles refreshed");
+    this.popup = function (togglesList) {
+        currentToggles = togglesList;
+        buildTogglesList(currentToggles);
     };
 
     this.filterToggles = function () {
         FeatureBeeTogglesExtensionStorage.persistFilter(getCurrentSelectedFilter());
-        toggleController.refreshToggles();
+        buildTogglesList(currentToggles);
     };
 
-    this.updateToggleStatus = function (toggle, isActive) {        
-        FeatureBeeToggleRepository.updateToggleStatus(toggle, isActive);
+    this.updateToggleStatus = function (toggle, enabled) {
+        toggle.Enabled = enabled;
+        CommunicationInterface.updateToggle(toggle, autoRefreshLastStatusCheckbox.checked);
 
         if (autoRefreshLastStatusCheckbox.checked) {
-            chrome.tabs.executeScript({
-                code: 'location.reload(true)'
-            });
             window.close();
-        } else {
-            FeatureBeeTogglesExtensionStorage.getToggleBarStatus(function (isBarActive) {
-                if (isBarActive) {
-                    chrome.tabs.executeScript({
-                        file: 'FeatureBeeToggleBar.js'
-                    });
-                    chrome.tabs.executeScript({
-                        code: 'FeatureBeeToggleBar.reload();'
-                    });
-                }
-            });
         }
     };
 
     function addToggleToList(toggle) {
         var filter = getCurrentSelectedFilter();
 
-        if (filter && filter != "" && filter != toggle.team) {
+        if (filter && filter != "" && filter != toggle.Team) {
             return;
         }
         
         var toggleDiv = createDiv("toggle");
         var switchDiv = createSwitchDiv(toggle);
-        var toggleNameDiv = createToggleNameDiv(toggle.name);
-        var toggleStatus = createToggleStatusDiv(toggle.status);
+        var toggleNameDiv = createToggleNameDiv(toggle.Name);
+        var toggleStatus = createToggleStatusDiv(toggle.State);
 
         toggleDiv.appendChild(toggleStatus);
         toggleDiv.appendChild(switchDiv);
@@ -130,13 +119,13 @@
         checkbox.type = "checkbox";
         checkbox.name = "onoffswitch";
         checkbox.id = toggle.id;
-        checkbox.checked = toggle.isActive;
+        checkbox.checked = toggle.Enabled;
         checkbox.className = "onoffswitch-checkbox";
         checkbox.myToggle = toggle;
         div.style.marginLeft = "4px";
 
         checkbox.addEventListener('change', function () {
-            toggleController.updateToggleStatus(toggle, checkbox.checked);
+            FeatureBeeToggleExtensionController.updateToggleStatus(toggle, checkbox.checked);
         });
 
         var label = document.createElement('label');
@@ -158,18 +147,10 @@
 
     var handleToggleBarStatus = function() {
         if (showToggleBarCheckbox.checked) {
-            chrome.tabs.executeScript({
-                file: 'FeatureBeeToggleBar.js'
-            });
-            chrome.tabs.executeScript({
-                code: 'FeatureBeeToggleBar.show();'
-            });
-
+            CommunicationInterface.showToggleBar();
             FeatureBeeTogglesExtensionStorage.setToogleBarOn();
         } else {
-            chrome.tabs.executeScript({
-                code: 'FeatureBeeToggleBar.hide();'
-            });
+            CommunicationInterface.hideToggleBar();
             FeatureBeeTogglesExtensionStorage.setToogleBarOff();
         }
     };
@@ -191,12 +172,12 @@
             }
         });
 
-        FeatureBeeTogglesExtensionStorage.getToggleBarStatus(function (isActive) {
-            showToggleBarCheckbox.checked = isActive;
+        FeatureBeeTogglesExtensionStorage.getToggleBarStatus(function (enabled) {
+            showToggleBarCheckbox.checked = enabled;
         });
 
-        FeatureBeeTogglesExtensionStorage.getAutoRefreshLastStatus(function (isActive) {
-            autoRefreshLastStatusCheckbox.checked = isActive;
+        FeatureBeeTogglesExtensionStorage.getAutoRefreshLastStatus(function (enabled) {
+            autoRefreshLastStatusCheckbox.checked = enabled;
         });
 
         FeatureBeeTogglesExtensionStorage.retrieveLastUsedFilter(function(filter) {

@@ -57,10 +57,12 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Chrome\background.js" />
     <Content Include="Chrome\bee.png" />
     <Content Include="Chrome\bee_16.png" />
     <Content Include="Chrome\bee_24.png" />
     <Content Include="Chrome\bee_48.png" />
+    <Content Include="Chrome\CommunicationInterface.js" />
     <Content Include="Chrome\content_scripts.js" />
     <Content Include="Chrome\Environments.js" />
     <Content Include="Chrome\FeatureBeeToggleBar.js" />

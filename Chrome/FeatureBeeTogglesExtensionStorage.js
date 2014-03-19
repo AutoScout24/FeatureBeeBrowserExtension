@@ -29,7 +29,7 @@
     };
 
     this.persistTogglePersonalConfig = function (toggle) {
-        console.log("Persisting toggle: " + toggle.name);
+        console.log("Persisting toggle: " + toggle.Name);
         this.retrieveTogglePersonalConfig(function (value) {
             var fullToggleConfig = value || [];
 

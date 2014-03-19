@@ -8,7 +8,8 @@
 	"tabs", 	 
 	"http://*/*", 
 	"https://*/*", 
-	"storage"
+	"storage",
+	"webRequest"
   ],
   "browser_action": {
       "default_title": "My Bookmarks",
@@ -22,10 +23,13 @@
    "content_scripts": [
     {
       "matches": ["*://*/*"],
-      "js": ["FeatureBeeTogglesExtensionStorage.js", "Environments.js", "FeatureBeeToggleRepository.js", "FeatureBeeToggleExtensionController.js", "FeatureBeeToggleBar.js", "content_scripts.js"],
+      "js": ["FeatureBeeTogglesExtensionStorage.js", "Environments.js", "FeatureBeeToggleRepository.js", "FeatureBeeToggleBar.js", "content_scripts.js"],
 	  "css" : ["toggle_bar.css"]
     }
   ],
+  "background": {
+    "scripts": ["background.js"]
+  },
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' https://ajax.googleapis.com 'unsafe-eval'; object-src 'self'"
 }

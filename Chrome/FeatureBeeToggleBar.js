@@ -8,27 +8,26 @@
     };
 
     this.show = function () {
-        
-        FeatureBeeToggleRepository.retrieveCurrentActiveToggles(function (toggles) {
-            var bar = createBar();
 
-            console.log("Actives:");
-            console.log(toggles);
+        var toggles = FeatureBeeToggleRepository.retrieveCurrentActiveToggles();
+        var bar = createBar();
 
-            if (toggles.length == 0) {
-                addToggle("No toggles are on in your browser", bar, "none");
-            } else {
-                for (var i in toggles) {
-                    addToggle(toggles[i].name, bar);
-                }
+        console.log("Actives:");
+        console.log(toggles);
+
+        if (toggles.length == 0) {
+            addToggle("No toggles are on in your browser", bar, "none");
+        } else {
+            for (var i in toggles) {
+                addToggle(toggles[i].Name, bar);
             }
+        }
 
-            document.body.style.marginTop = bar.style.height;
-            document.body.appendChild(bar);
+        document.body.style.marginTop = bar.style.height;
+        document.body.appendChild(bar);
             
 
-            FeatureBeeTogglesExtensionStorage.setToogleBarOn();
-        });        
+        FeatureBeeTogglesExtensionStorage.setToogleBarOn();
     };
 
     this.hide = function () {
