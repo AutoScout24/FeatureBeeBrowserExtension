@@ -4,7 +4,7 @@
         FeatureBeeToggleRepository.refreshCurrentToggles();
         FeatureBeeToggleRepository.updateCookieForActiveToggles();
 
-        if (localStorage["showToggleBar"]) {
+        if (localStorage["featureBeeToggleBar"] === "show") {
             FeatureBeeToggleBar.show();
         }
 
@@ -38,12 +38,12 @@
                   break;
               case "showToggleBar":
                   console.log("Responding to showToggleBar");
-                  localStorage["showToggleBar"] = true;
+                  localStorage["featureBeeToggleBar"] = "show";
                   FeatureBeeToggleBar.show();
                   break;
               case "hideToggleBar":
                   console.log("Responding to hideToggleBar");
-                  localStorage["showToggleBar"] = false;
+                  localStorage["featureBeeToggleBar"] = "hide";
                   FeatureBeeToggleBar.hide();
                   break;
           default:

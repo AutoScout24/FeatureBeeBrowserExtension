@@ -25,9 +25,6 @@
 
         document.body.style.marginTop = bar.style.height;
         document.body.appendChild(bar);
-            
-
-        FeatureBeeTogglesExtensionStorage.setToogleBarOn();
     };
 
     this.hide = function () {
