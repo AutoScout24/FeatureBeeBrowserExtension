@@ -1,18 +1,22 @@
 ﻿(function () {
-    if (FeatureBeeToggleActiveEnviroments.isToggleActiveEnvironment(document.URL)) {
 
-        FeatureBeeToggleRepository.refreshCurrentToggles();
-        FeatureBeeToggleRepository.updateCookieForActiveToggles();
+    chrome.runtime.sendMessage({ msg: "isThisUrlEligibleForFeatureBee?", url: document.URL }, function (response) {
+        console.log("they said " + response.answer + " to url " + document.URL);
 
-        if (localStorage["featureBeeToggleBar"] === "show") {
-            FeatureBeeToggleBar.show();
-        }
-
-        window.addEventListener("unload", function (e) {
+        if (response.answer == "yes") {
             FeatureBeeToggleRepository.refreshCurrentToggles();
             FeatureBeeToggleRepository.updateCookieForActiveToggles();
-        }, false);
-    }
+
+            if (localStorage["featureBeeToggleBar"] === "show") {
+                FeatureBeeToggleBar.show();
+            }
+
+            window.addEventListener("unload", function (e) {
+                FeatureBeeToggleRepository.refreshCurrentToggles();
+                FeatureBeeToggleRepository.updateCookieForActiveToggles();
+            }, false);
+        }
+    });
     
     chrome.runtime.onMessage.addListener(
       function (request, sender, sendResponse) {

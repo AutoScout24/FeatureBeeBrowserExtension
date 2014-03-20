@@ -73,6 +73,9 @@
     <Content Include="Chrome\featurebee_extension.css" />
     <Content Include="Chrome\initialize.js" />
     <Content Include="Chrome\on_off_button.css" />
+    <Content Include="Chrome\options.css" />
+    <Content Include="Chrome\options.html" />
+    <Content Include="Chrome\options.js" />
     <Content Include="Chrome\popup.html" />
     <Content Include="Chrome\test_data.js" />
     <Content Include="Chrome\toggle_bar.css" />

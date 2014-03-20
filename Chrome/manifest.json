@@ -1,6 +1,6 @@
 {
   "name": "Feature Bee",
-  "version": "1.0",
+  "version": "0.1",
   "description": "A browser action to toggle feature bee features",
   "permissions": [
 	"tabs",
@@ -31,5 +31,6 @@
     "scripts": ["background.js"]
   },
   "manifest_version": 2,
-  "content_security_policy": "script-src 'self' https://ajax.googleapis.com 'unsafe-eval'; object-src 'self'"
+  "content_security_policy": "script-src 'self' https://ajax.googleapis.com 'unsafe-eval'; object-src 'self'",
+  "options_page" : "options.html"
 }
