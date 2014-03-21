@@ -7,10 +7,20 @@ saveButton.addEventListener('click', function () {
     var environments = [];
 
     for (var i = 0; i < environmentRegexes.length; i++) {
-        environments.push({ pattern : new RegExp(environmentRegexes[i])});
+        if (environmentRegexes[i] != "") {
+            environments.push({ pattern: environmentRegexes[i] });
+        }        
     }
 
-    console.log(environments);
-    chrome.storage.local.set({ environments: environments });
+    console.log(environments);    
+    chrome.runtime.sendMessage({ msg : "updateCurrentEnvironments", updatedEnvironments: environments });
 
+    alert("Options successfully saved.");
+});
+
+chrome.storage.local.get(null, function (value) {
+    console.log(value.environments);
+    for (var i = 0; i < value.environments.length; i++) {
+        allEnviromentsTextArea.value += value.environments[i].pattern + "\n";
+    }
 });
