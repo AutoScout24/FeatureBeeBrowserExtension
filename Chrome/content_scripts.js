@@ -37,7 +37,9 @@
                   if (request.reloadCurrentPage) {
                       location.reload(true);
                   } else {
-                      FeatureBeeToggleBar.reload();
+                      if (localStorage["featureBeeToggleBar"] === "show") {
+                          FeatureBeeToggleBar.reload();
+                      }                      
                   }
                   break;
               case "showToggleBar":
