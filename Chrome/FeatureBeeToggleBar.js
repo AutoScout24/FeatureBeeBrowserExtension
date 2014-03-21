@@ -88,7 +88,7 @@
 
         var headerTitle = document.createElement('span');
         headerTitle.className = "toggle-bar-header_title";
-        headerTitle.innerText = "Feature Bee   | ";
+        headerTitle.innerText = "FeatureBee   | ";
 
         headerImage.appendChild(headerTitle);
         headerContainer.appendChild(headerImage);

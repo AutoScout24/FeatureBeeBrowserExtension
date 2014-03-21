@@ -1,7 +1,7 @@
 {
   "name": "Feature Bee",
   "version": "0.1",
-  "description": "A browser action to toggle feature bee features",
+  "description": "A chrome extension to support the using of FeatureBee",
   "permissions": [
 	"tabs",
     "activeTab", 
