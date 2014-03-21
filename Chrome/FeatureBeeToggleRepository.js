@@ -71,7 +71,7 @@
         }
 
         var expires = "expires=" + d.toGMTString();
-        document.cookie = "featurebee=" + encodeURIComponent(value) + "; " + expires;
+        document.cookie = "featurebee=" + encodeURIComponent(value) + "; " + expires + ";domain=" + parseDomain(document.URL) + ";path=/";
     };
 
     this.updateToggleStatus = function (toggle) {
@@ -101,4 +101,11 @@
             }
         }
     };
+
+    function parseDomain(url) {
+        var parser = document.createElement('a');
+        parser.href = url;
+        var domainArray = parser.host.split(".").reverse();
+        return "." + domainArray[1] + "." + domainArray[0];
+    }
 };
