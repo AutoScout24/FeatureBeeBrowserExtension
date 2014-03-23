@@ -65,6 +65,20 @@
     padding-left: 6px;
 }
 
+.forget-toggle {
+    margin-left: 2px;
+    padding-left: 6px;
+    vertical-align: middle;
+    font-size: 10px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.forget-toggle:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .styled_select{
    min-width: 150px;
    height: 25px;
@@ -140,4 +154,77 @@
     color: red;
     font-size: 18px;
     text-align: center;
+}
+
+.add_to_my_toggles {
+    background-color: darkorange;
+    border: black 1px solid;
+    color: white;
+    width: 50px;
+    font-family: Arial;
+    font-size: 10px;
+    font-weight: bold;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.add_to_my_toggles:hover {
+    cursor: pointer;
+    background-color: white;
+    color: darkorange;
+}
+
+.my_toggles_title {
+    font-family: Arial;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.add_existing_toggles_to_list {
+    margin: 10px 0 10px 0;
+    /*border: black 1px solid;*/
+    width: 100%;
+    background-color: lightgreen;
+    float: right;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    text-align: center;
+}
+
+.add_existing_toggles_to_list:before {
+    content: "+";
+    color: green;
+    font-size: 125%;
+    font-weight: bold;
+}
+.add_existing_toggles_to_list:hover:before {
+    color: lightgreen;
+}
+
+.add_existing_toggles_to_list:hover {
+    cursor: pointer;
+    background-color: green;
+    color: lightgreen;
+}
+
+.back_to_my_toggles_list:before {
+    color: darkblue;
+    content: "<<";
+    font-size: 12px;
+    font-weight: bolder;
+    font-family: Arial;
+}
+
+.back_to_my_toggles_list {
+    color: darkblue;
+    margin-left: 3px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: bolder;
+    font-family: Arial;
+}
+
+.back_to_my_toggles_list:hover {
+    cursor: pointer;
+    font-style: italic;
 }

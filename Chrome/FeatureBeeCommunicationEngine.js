@@ -28,6 +28,10 @@
         tellChromeTo({ msg: "updateThisToggle", toggle: toggle }, callback);
     };
 
+    this.tellChromeToForgetThisToggle = function (toggle, callback) {
+        tellChromeTo({ msg: "forgetThisToggle", toggle: toggle }, callback);
+    };
+
     this.tellChromeToUpdateEnvironments = function (environments, callback) {
         tellChromeTo({ msg: "updateCurrentEnvironments", updatedEnvironments: environments }, callback);
     };

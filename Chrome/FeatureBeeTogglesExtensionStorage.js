@@ -107,6 +107,15 @@
         chrome.storage.local.set({ "togglePersonalConfig": storedToggles });
     };
 
+    this.forgetToggle = function(toggle) {
+        for (var i in storedToggles) {
+            if (storedToggles[i].id == toggle.id) {
+                storedToggles.splice(i, 1);
+            }
+        };
+        chrome.storage.local.set({ "togglePersonalConfig": storedToggles });
+    };
+
     var retrieveEnvironments = function(callback) {
         chrome.storage.local.get(null, function (value) {
             console.log("retrieving enviroments");

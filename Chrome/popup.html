@@ -27,19 +27,38 @@
                         </div>
                     </div>
                 </div>
-                <div id="toggles" class="toggle_bar container">
-                    <div id="filter" class="toggle" style="padding-bottom: 30px">
-                        <div style="padding-right: 3px; width: 100%;">
-                            <div style="float: right; width: 100%">
-                                <select id="filterSelect" class="styled_select">
-                                    <option value="">Show all toggles</option>
-                                    <option value="Dealer">Show only Dealer Toggles</option>
-                                    <option value="ASM Enduser">Show only ASM Endkunde Toggles</option>
-                                    <option value="ASM Garage">Show only ASM Werkstatt Toggles</option>
-                                </select>
-                            </div>
+                <div id="myToggles" class="toggle toggle_bar" style="padding-bottom: 30px; min-height: 60px">
+                    <div style="padding-right: 3px; width: 100%;">
+                        <div class="my_toggles_title">
+                            My Toggles
                         </div>
                     </div>
+                    <div style="padding-right: 3px; width: 100%; vertical-align: middle">
+                        <div id="addExistingTogglesToList" class="add_existing_toggles_to_list">
+                            Add existing Toggles to your list
+                        </div>
+                    </div>
+                    <div id="myTogglesList">
+                    </div>
+                </div>
+                <div id="togglesListContainer" class="toggle_bar container">
+                    <div id="backToMyTogglesList" class="back_to_my_toggles_list">
+                        Back to your toggles list
+                    </div>
+                    <div id="toggles">
+                        <div id="filter" class="toggle" style="padding-bottom: 30px">
+                            <div style="padding-right: 3px; width: 100%;">
+                                <div style="float: right; width: 100%">
+                                    <select id="filterSelect" class="styled_select">
+                                        <option value="">Show all toggles</option>
+                                        <option value="Dealer">Show only Dealer Toggles</option>
+                                        <option value="ASM Enduser">Show only ASM Endkunde Toggles</option>
+                                        <option value="ASM Garage">Show only ASM Werkstatt Toggles</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                                                           
                 </div>
                 <div class="options_bar" style="margin-bottom: 10px">
                     <ul style="margin: 0">

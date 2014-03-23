@@ -2,10 +2,15 @@
 
     var currentToggles = null;
 
-    var toggleListObj = document.querySelector('#toggles');
+    var toggleListObj = document.getElementById('toggles');
+    var toggleListContainerObj = document.getElementById('togglesListContainer');
+    var myToggleListObj = document.getElementById('myTogglesList');
+    var myToggleContainerObj = document.getElementById('myToggles');
+    var addToListListObj = document.querySelector('#addExistingTogglesToList');
     var showToggleBarCheckbox = document.getElementById("showToggleBar");
     var autoRefreshLastStatusCheckbox = document.getElementById("autoRefresh");
     var filterObj = document.getElementById("filterSelect");
+    var backToMyTogglesListObj = document.getElementById("backToMyTogglesList");
 
     this.popup = function () {
         FeatureBeeCommunicationEngine.tellChromeToGiveMeTheCachedToggles(function(response) {
@@ -40,7 +45,7 @@
         }
 
         var toggleDiv = createDiv("toggle");
-        var switchDiv = createSwitchDiv(toggle);
+        var switchDiv = toggle.isLocal ? createSwitchDiv(toggle) : createAddDiv(toggle);
         var toggleNameDiv = createToggleNameDiv(toggle.Name);
         var toggleStatus = createToggleStatusDiv(toggle.State);
 
@@ -48,7 +53,21 @@
         toggleDiv.appendChild(switchDiv);
         toggleDiv.appendChild(toggleNameDiv);
 
-        toggleListObj.appendChild(toggleDiv);
+        if (toggle.isLocal) {
+            var forgetToggleDiv = createDiv("container_cell forget-toggle");
+            forgetToggleDiv.innerText = "(forget)";            
+            forgetToggleDiv.addEventListener('click', function () {
+                FeatureBeeCommunicationEngine.tellChromeToForgetThisToggle(toggle);
+                FeatureBeeCommunicationEngine.tellChromeToGiveMeTheCachedToggles(function (response) {
+                    buildTogglesList(response.toggles);
+
+                });
+            });
+            toggleDiv.appendChild(forgetToggleDiv);
+            myToggleListObj.appendChild(toggleDiv);
+        } else {
+            toggleListObj.appendChild(toggleDiv);
+        }
     };
 
     function getCurrentSelectedFilter() {
@@ -78,6 +97,10 @@
 
         while (toggleListObj.firstChild) {
             toggleListObj.removeChild(toggleListObj.firstChild);
+        }
+
+        while (myToggleListObj.firstChild) {
+            myToggleListObj.removeChild(myToggleListObj.firstChild);
         }
 
         toggleListObj.appendChild(filterNode);
@@ -117,6 +140,22 @@
         statusContainer.appendChild(statusDiv);
 
         return statusContainer;
+    }
+
+    function createAddDiv(toggle) {
+        var div = createDiv("container_cell add_to_my_toggles");
+        div.innerText = "Add";
+
+        div.addEventListener('click', function () {
+            FeatureBeeCommunicationEngine.tellChromeToUpdateThisToggle(toggle);
+            FeatureBeeCommunicationEngine.tellChromeToGiveMeTheCachedToggles(function(response) {
+                buildTogglesList(response.toggles);
+                myToggleContainerObj.style.display = "block";
+                toggleListContainerObj.style.display = "none";
+            });
+        });
+
+        return div;
     }
 
     function createSwitchDiv(toggle) {
@@ -203,6 +242,18 @@
         showToggleBarCheckbox.addEventListener('click', handleToggleBarStatus, false);
         autoRefreshLastStatusCheckbox.addEventListener('click', handleAutoRefreshLastStatus, false);
     }();
+    
+    toggleListContainerObj.style.display = "none";
+
+    addToListListObj.addEventListener("click", function() {
+        myToggleContainerObj.style.display = "none";
+        toggleListContainerObj.style.display = "block";
+    });
+
+    backToMyTogglesListObj.addEventListener("click", function () {
+        myToggleContainerObj.style.display = "block";
+        toggleListContainerObj.style.display = "none";
+    });
 
     filterObj.addEventListener("change", this.filterToggles);
     this.popup();

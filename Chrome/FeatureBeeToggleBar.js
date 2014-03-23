@@ -64,6 +64,7 @@
                 toggleIcon = "&#x2717;";
                 break;
             default:
+                markClassName = "toggle-bar-mark toggle-bar-mark-no-icon";
                 toggleIcon = "";
         }
        
@@ -73,6 +74,10 @@
         var toggleNameSpan = document.createElement('span');
         toggleNameSpan.className = "toggle-bar-toggle-name";
         toggleNameSpan.innerText = name;
+
+        if (toggleIcon == "") {
+            toggleNameSpan.className = "toggle-bar-mark-no-icon";
+        }
 
         var toggleTickSpan = document.createElement('span');
         toggleTickSpan.className = markClassName;

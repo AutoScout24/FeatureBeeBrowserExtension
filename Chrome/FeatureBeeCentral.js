@@ -1,12 +1,14 @@
 ﻿FeatureBeeCentral = new function () {
 
     var cachedToggles = [];
+    var lastRevisedToggles = [];
 
     FeatureBeeTogglesExtensionStorage.initCache();
 
     var listeners = {
 
         reviseAndCacheToggles: function (request, sender, sendResponse) {
+            lastRevisedToggles = request.toggles;
             sendResponse({ toggles: FeatureBeeCentral.reviseAndCacheToggles(request.toggles) });
         },
 
@@ -36,6 +38,25 @@
 
         clearConfiguration: function() {
             FeatureBeeTogglesExtensionStorage.resetConfigurationToDefaults();
+        },
+
+        forgetThisToggle: function(request) {
+            FeatureBeeTogglesExtensionStorage.forgetToggle(request.toggle);
+            
+            for (var i = 0; i < cachedToggles.length; i++) {
+                if (cachedToggles[i].id == request.toggle.id) {
+                    cachedToggles[i].isLocal = false;
+                }
+            }
+
+            console.log("forgot toggles. Now cached:");
+            console.log(cachedToggles);
+            var config = FeatureBeeTogglesExtensionStorage.getConfiguration();
+            
+            if (config.isToggleBarEnabled) {
+                console.log("refresh toolbar");
+                FeatureBeeCommunicationEngine.tellWindowToRefreshToggleBar(cachedToggles);
+            }
         }
     };
 
@@ -88,6 +109,7 @@
                 toggle.Enabled = isEnabled;
                 toggle.isLocal = true;
 
+                cachedToggles[i] = toggle;
                 FeatureBeeTogglesExtensionStorage.updateToggle(toggle);
                 break;
             }
