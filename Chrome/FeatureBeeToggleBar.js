@@ -10,16 +10,16 @@
     this.show = function (toggles) {
 
         var bar = createBar();
-        toggles = FeatureBeeClient.parseActiveToggles(toggles);
+        toggles = FeatureBeeClient.parseOverriddenToggles(toggles);
 
-        console.log("Actives:");
+        console.log("Displaying toggles:");
         console.log(toggles);
 
         if (toggles.length == 0) {
-            addToggle("No toggles are on in your browser", bar, "none");
+            addToggle("There are current no toggles overrides active in your browser", bar, "none");
         } else {
             for (var i in toggles) {
-                addToggle(toggles[i].Name, bar);
+                addToggle(toggles[i].Name, bar, toggles[i].Enabled ? "enabled" : "disabled");
             }
         }
 
@@ -52,13 +52,19 @@
 
     function addToggle(name, bar, icon) {
         var toggleIcon;
-
+        var markClassName = "";
+        
         switch (icon) {
-            case "none":
-                toggleIcon = "";
+            case "enabled":
+                toggleIcon = "&#x2713;";
+                markClassName = "toggle-bar-mark toggle-bar-mark-enabled";
+                break;
+            case "disabled":
+                markClassName = "toggle-bar-mark toggle-bar-mark-disabled";
+                toggleIcon = "&#x2717;";
                 break;
             default:
-                toggleIcon = "&#10003;";
+                toggleIcon = "";
         }
        
         var toggleContainer = document.createElement('li');
@@ -69,7 +75,7 @@
         toggleNameSpan.innerText = name;
 
         var toggleTickSpan = document.createElement('span');
-        toggleTickSpan.className = "toggle-bar-tick";
+        toggleTickSpan.className = markClassName;
         toggleTickSpan.innerHTML = toggleIcon;
 
         toggleTickSpan.appendChild(toggleNameSpan);

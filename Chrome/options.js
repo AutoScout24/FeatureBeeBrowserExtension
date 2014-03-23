@@ -1,4 +1,5 @@
 ﻿var saveButton = document.getElementById("saveButton");
+var resetButton = document.getElementById("resetCache");
 var allEnvironmentsTextArea = document.getElementById("allEnvironments");
 
 
@@ -17,6 +18,14 @@ saveButton.addEventListener('click', function () {
 
     alert("Options successfully saved.");
 });
+
+resetButton.addEventListener('click', function() {
+    if (confirm("Are you sure you want to reset featurebee extension configurations to default value?")) {
+        FeatureBeeCommunicationEngine.tellChromeToClearMeTheCurrentConfiguration();
+        alert("All settings were reset to default values.\nPlease RESTART your browser now.");
+    }
+});
+
 
 FeatureBeeCommunicationEngine.tellChromeToGiveMeTheCurrentConfiguration(function (response) {
     var environments = response.config.environments;

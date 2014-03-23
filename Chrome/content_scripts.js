@@ -11,7 +11,7 @@
                         FeatureBeeToggleBar.show(togglesResponse.toggles);
                     }
                 });
-                FeatureBeeClient.updateCookieForActiveToggles(togglesResponse.toggles);
+                FeatureBeeClient.updateCookieForOverriddeToggles(togglesResponse.toggles);
             });
         }
     });        

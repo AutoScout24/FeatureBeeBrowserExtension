@@ -23,7 +23,7 @@
    "content_scripts": [	
     {
       "matches": ["*://*/*"],
-      "js": ["FeatureBeeCommunicationEngine.js", "FeatureBeeTogglesExtensionStorage.js", "FeatureBeeClient.js", "FeatureBeeToggleBar.js"],
+      "js": ["FeatureBeeCommunicationEngine.js", "FeatureBeeTogglesExtensionStorage.js", "FeatureBeeClient.js", "FeatureBeeToggleBar.js", "content_scripts.js"],
 	  "css" : ["toggle_bar.css"]
     }
   ],

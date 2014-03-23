@@ -16,6 +16,10 @@
         tellChromeTo({ msg: "saveMyConfiguration", config: config }, callback);
     };
 
+    this.tellChromeToClearMeTheCurrentConfiguration = function (callback) {
+        tellChromeTo({ msg: "clearConfiguration"}, callback);
+    };
+
     this.tellChromeToGiveMeTheCachedToggles = function(callback) {
         tellChromeTo({ msg: "giveMeAllCachedToggles" }, callback);
     };

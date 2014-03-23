@@ -1,13 +1,24 @@
 ﻿FeatureBeeTogglesExtensionStorage = new function () {
 
-    var storedToggles = [];
-
-    var config = {
-        isToggleBarEnabled: false,
-        isAutoRefreshEnabled: false,
-        lastUsedFilter: "",
-        environments: []
+    var getDefaultEnviroments = function () {
+        return [
+            { name: "Autoscout24", pattern: "(autoscout24\.)" },
+            { name: "AS24", pattern: "(as24\.)" },
+            { name: "local", pattern: "(\.local)($|n*\/)" }
+        ];
     };
+
+    var getDefaultConfiguration = function () {
+        return {
+            isToggleBarEnabled: false,
+            isAutoRefreshEnabled: false,
+            lastUsedFilter: "",
+            environments: getDefaultEnviroments()
+        };
+    };
+
+    var storedToggles = [];
+    var config = getDefaultConfiguration();
 
     this.initCache = function() {
         retrieveTogglePersonalConfig(function (toggles) {
@@ -39,6 +50,13 @@
 
     this.getConfiguration = function() {
         return config;
+    };
+
+    this.resetConfigurationToDefaults = function() {
+        config = getDefaultConfiguration();
+        persistConfiguration();
+        storedToggles = [];
+        chrome.storage.local.set({ "togglePersonalConfig": storedToggles });
     };
 
     this.updateConfiguration = function (configuration) {
@@ -80,9 +98,8 @@
         console.log("Updating toggle");
         console.log(toggle);
         for (var i in storedToggles) {
-            if (storedToggles[i] == toggle.id) {
-                storedToggles = storedToggles.splice(i, 1);
-                break;
+            if (storedToggles[i].id == toggle.id) {
+                storedToggles.splice(i, 1);
             }
         };
 
@@ -97,11 +114,7 @@
             var environments = value.configuration.environments || [];
 
             if (environments.length == 0) {
-                environments = [
-                    { name: "Autoscout24", pattern: "(autoscout24\.)" },
-                    { name: "AS24", pattern: "(as24\.)" },
-                    { name: "local", pattern: "(\.local)($|n*\/)" }
-                ];
+                environments = getDefaultEnviroments();
             }
 
             callback(environments);
@@ -128,5 +141,5 @@
         console.log("persist config");
         console.log(config);
         chrome.storage.local.set({ "configuration": config });
-    };
+    };    
 };

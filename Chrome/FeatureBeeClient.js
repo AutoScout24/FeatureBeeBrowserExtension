@@ -15,6 +15,7 @@
 
         refreshToggleBar: function(request) {
             FeatureBeeToggleBar.reload(request.toggles);
+            FeatureBeeClient.updateCookieForOverriddeToggles(request.toggles);
         }
     };
 
@@ -44,28 +45,34 @@
         return toggles;
     };
     
-    this.parseActiveToggles = function(toggles) {
-        var activeToggles = [];
+    this.parseOverriddenToggles = function(toggles) {
+        var overriddenToggles = [];
 
         for (var a in toggles) {
-            if (toggles[a].Enabled) {
-                activeToggles.push(toggles[a]);
+            if (toggles[a].overiddesServerEnabled) {
+                overriddenToggles.push(toggles[a]);
             }
         }
 
-        return activeToggles;
+        return overriddenToggles;
 
     };
 
-    this.updateCookieForActiveToggles = function (toggles) {
-        var activeToggles = this.parseActiveToggles(toggles);
+    this.updateCookieForOverriddeToggles = function (toggles) {
+        var overriddenToggles = this.parseOverriddenToggles(toggles);
         var d = new Date();
         d.setTime(d.getTime() + (24 * 60 * 60 * 1000));
         var value = "";
 
-        for (var a in activeToggles) {
-            value += (value.length === 0 ? "" : "#") + activeToggles[a].Name;
+        console.log("updateCookieForOverriddeToggles on domain " + parseDomain(document.URL));
+        console.log(overriddenToggles);
+
+        for (var a in overriddenToggles) {
+            //value += (value.length === 0 ? "" : "#") + overriddenToggles[a].Name;
+            value += "#" + overriddenToggles[a].Name + "=" + (overriddenToggles[a].Enabled ? "true" : "false");
         }
+
+        value += "#";
 
         var expires = "expires=" + d.toGMTString();
         document.cookie = "featurebee=" + encodeURIComponent(value) + "; " + expires + ";domain=" + parseDomain(document.URL) + ";path=/";

@@ -1,6 +1,6 @@
 ﻿.toggle-bar-container {
     background-color: #fffb40;
-    height: 20px;
+    height: 100%;
     width: 100%;
     position: fixed;
     left: 0px;
@@ -14,14 +14,21 @@
     z-index: 1000; 
 }
 
-.toggle-bar-tick {
-    padding-top: 2px;
+.toggle-bar-mark {
+     padding-top: 2px;
     font-family: wingdings;
-    font-size: 200%;
-    color: green;
+    font-size: 175%;
     vertical-align: middle;
     font-weight: bolder;
     display: inline-block;
+}
+
+.toggle-bar-mark-enabled{
+    color: green;
+}
+
+.toggle-bar-mark-disabled {
+    color: red;
 }
 
 .toggle-bar-img-header {
@@ -56,4 +63,16 @@
     display: inline-block;
     color: black;
     font-weight: normal;
+    padding-left: 2px;
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+}
+
+.toggle-bar-toggle-name:hover {
+    overflow: visible;
+    max-width: 100%;
+    font-weight: bold;
 }

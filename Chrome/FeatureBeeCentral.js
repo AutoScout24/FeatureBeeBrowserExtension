@@ -32,6 +32,10 @@
 
         updateCurrentEnvironments: function (request) {
             FeatureBeeTogglesExtensionStorage.updateEnvironments(request.updatedEnvironments);
+        },
+
+        clearConfiguration: function() {
+            FeatureBeeTogglesExtensionStorage.resetConfigurationToDefaults();
         }
     };
 
@@ -40,6 +44,11 @@
     this.reviseAndCacheToggles = function (toggles) {
         console.log("Revising and cahicng toggles");
         console.log(toggles);
+
+        for (var j = 0; j < toggles.length; j++) {
+            toggles[j].serverEnabled = toggles[j].Enabled || false;
+            toggles[j].overiddesServerEnabled = false;
+        }
 
         var storedToggles = FeatureBeeTogglesExtensionStorage.getCachedStoredToggles();
         for (var i in storedToggles) {
@@ -51,6 +60,9 @@
                 if (currentToggle.id == storedToggle.id) {
 
                     if (currentToggle.State == storedToggle.State) {
+
+                        storedToggle.overiddesServerEnabled = currentToggle.serverEnabled != storedToggle.Enabled;                        
+
                         toggles[t] = storedToggle;
                         continue;
                     }
@@ -68,8 +80,10 @@
     this.updateToggle = function(toggle) {
 
         FeatureBeeTogglesExtensionStorage.updateToggle(toggle);
+        
         for (var i = 0; i < cachedToggles.length; i++) {
             if (cachedToggles[i].id == toggle.id) {
+                toggle.overiddesServerEnabled = toggle.serverEnabled != toggle.Enabled;
                 cachedToggles[i] = toggle;
                 break;
             }
