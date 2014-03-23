@@ -32,8 +32,8 @@
         tellChromeTo({ msg: "updateCurrentEnvironments", updatedEnvironments: environments }, callback);
     };
 
-    this.tellWindowToRefresh = function() {
-        tellActiveTabTo("doAFullPageReload");
+    this.tellWindowToRefresh = function(toggles) {
+        tellActiveTabTo({ msg: "doAFullPageReload", toggles: toggles });
     };
 
     this.tellWindowToShowToolbar = function(toggles) {

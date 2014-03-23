@@ -61,9 +61,10 @@
 
                     if (currentToggle.State == storedToggle.State) {
 
-                        storedToggle.overiddesServerEnabled = currentToggle.serverEnabled != storedToggle.Enabled;                        
-
-                        toggles[t] = storedToggle;
+                        var overiddesServerEnabled = currentToggle.serverEnabled != storedToggle.Enabled;
+                        toggles[t].overiddesServerEnabled = overiddesServerEnabled;
+                        toggles[t].isLocal = true;
+                        toggles[t].Enabled = storedToggle.Enabled;
                         continue;
                     }
                 }
@@ -77,14 +78,17 @@
         return toggles;
     };
 
-    this.updateToggle = function(toggle) {
+    this.updateToggle = function (toggle) {
+        var isEnabled = toggle.Enabled;
 
-        FeatureBeeTogglesExtensionStorage.updateToggle(toggle);
-        
         for (var i = 0; i < cachedToggles.length; i++) {
             if (cachedToggles[i].id == toggle.id) {
+                toggle = cachedToggles[i];
                 toggle.overiddesServerEnabled = toggle.serverEnabled != toggle.Enabled;
-                cachedToggles[i] = toggle;
+                toggle.Enabled = isEnabled;
+                toggle.isLocal = true;
+
+                FeatureBeeTogglesExtensionStorage.updateToggle(toggle);
                 break;
             }
         }
@@ -92,7 +96,7 @@
         var config = FeatureBeeTogglesExtensionStorage.getConfiguration();
 
         if (config.isAutoRefreshEnabled) {
-            FeatureBeeCommunicationEngine.tellWindowToRefresh();
+            FeatureBeeCommunicationEngine.tellWindowToRefresh(cachedToggles);
             return;
         }
 

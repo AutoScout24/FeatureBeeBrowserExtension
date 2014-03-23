@@ -9,8 +9,9 @@
             FeatureBeeToggleBar.hide();
         },
 
-        doAFullPageReload: function() {
-            location.reload(true);
+        doAFullPageReload: function (request) {
+            FeatureBeeClient.updateCookieForOverriddeToggles(request.toggles);
+            setTimeout("location.reload(true);", 1000);
         },
 
         refreshToggleBar: function(request) {
@@ -49,7 +50,7 @@
         var overriddenToggles = [];
 
         for (var a in toggles) {
-            if (toggles[a].overiddesServerEnabled) {
+            if (toggles[a].isLocal) {
                 overriddenToggles.push(toggles[a]);
             }
         }
@@ -68,14 +69,15 @@
         console.log(overriddenToggles);
 
         for (var a in overriddenToggles) {
-            //value += (value.length === 0 ? "" : "#") + overriddenToggles[a].Name;
             value += "#" + overriddenToggles[a].Name + "=" + (overriddenToggles[a].Enabled ? "true" : "false");
+            //value += "#" + overriddenToggles[a].Name;
         }
 
         value += "#";
 
         var expires = "expires=" + d.toGMTString();
-        document.cookie = "featurebee=" + encodeURIComponent(value) + "; " + expires + ";domain=" + parseDomain(document.URL) + ";path=/";
+        //document.cookie = "featureBee=" + encodeURIComponent(value) + "; " + expires + ";domain=" + parseDomain(document.URL) + ";path=/";
+        document.cookie = "featureBee=" + encodeURIComponent(value) + "; " + expires;
     };    
 
     function parseDomain(url) {
