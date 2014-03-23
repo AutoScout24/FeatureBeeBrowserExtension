@@ -1,26 +1,27 @@
 ﻿var saveButton = document.getElementById("saveButton");
-var allEnviromentsTextArea = document.getElementById("allEnviroments");
+var allEnvironmentsTextArea = document.getElementById("allEnvironments");
 
 
 saveButton.addEventListener('click', function () {
-    var environmentRegexes = allEnviromentsTextArea.value.split('\n');
+    var environmentRegexes = allEnvironmentsTextArea.value.split('\n');
     var environments = [];
-
+    debugger;
     for (var i = 0; i < environmentRegexes.length; i++) {
         if (environmentRegexes[i] != "") {
             environments.push({ pattern: environmentRegexes[i] });
         }        
     }
 
-    console.log(environments);    
-    chrome.runtime.sendMessage({ msg : "updateCurrentEnvironments", updatedEnvironments: environments });
+    console.log(environments);
+    FeatureBeeCommunicationEngine.tellChromeToUpdateEnvironments(environments);
 
     alert("Options successfully saved.");
 });
 
-chrome.storage.local.get(null, function (value) {
-    console.log(value.environments);
-    for (var i = 0; i < value.environments.length; i++) {
-        allEnviromentsTextArea.value += value.environments[i].pattern + "\n";
+FeatureBeeCommunicationEngine.tellChromeToGiveMeTheCurrentConfiguration(function (response) {
+    var environments = response.config.environments;
+
+    for (var i = 0; i < environments.length; i++) {
+        allEnvironmentsTextArea.value += environments[i].pattern + "\n";
     }
 });

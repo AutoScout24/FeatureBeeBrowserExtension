@@ -3,50 +3,39 @@
     var cachedToggles = [];
 
     FeatureBeeTogglesExtensionStorage.initCache();
-    
-    chrome.runtime.onMessage.addListener(
-      function (request, sender, sendResponse) {
-          var msg = request.msg;
-          console.log("FeatureBeeCentral: msg is there: " + msg);
 
-          switch (msg) {
-              case "chrome-reviseAndCacheToggles":                  
-                  sendResponse({ toggles: FeatureBeeCentral.reviseAndCacheToggles(request.toggles) });
-                  break;
-              case "chrome-tellMeMyConfiguration":
-                  sendResponse({ config: FeatureBeeTogglesExtensionStorage.getConfiguration() });
-                  break;
-              case "chrome-saveMyConfiguration":
-                  FeatureBeeTogglesExtensionStorage.updateConfiguration(request.config);
-                  break;
-              case "chrome-giveMeAllCachedToggles":
-                  sendResponse({ toggles: cachedToggles });
-                  break;
-              case "chrome-updateThisToggle":
-                  var toggle = request.toggle;
-                  FeatureBeeTogglesExtensionStorage.updateToggle(toggle);
-                  for (var i = 0; i < cachedToggles.length; i++) {
-                      if (cachedToggles[i].id == toggle.id) {
-                          cachedToggles[i] = toggle;
-                          break;
-                      }
-                  }
+    var listeners = {
 
-                  var config = FeatureBeeTogglesExtensionStorage.getConfiguration();
+        reviseAndCacheToggles: function (request, sender, sendResponse) {
+            sendResponse({ toggles: FeatureBeeCentral.reviseAndCacheToggles(request.toggles) });
+        },
 
-                  if (config.isAutoRefreshEnabled) {
-                      FeatureBeeCommunicationEngine.tellWindowToRefresh();
-                      break;
-                  }
+        tellMeMyConfiguration: function(request, sender, sendResponse) {
+            sendResponse({ config: FeatureBeeTogglesExtensionStorage.getConfiguration() });
+        },
 
-                  if (config.isToggleBarEnabled) {
-                      FeatureBeeCommunicationEngine.tellWindowToRefreshToggleBar(cachedToggles);
-                  }
+        saveMyConfiguration: function(request) {
+            FeatureBeeTogglesExtensionStorage.updateConfiguration(request.config);
+        },
 
-                  break;
-              default:
-          }
-      });
+        giveMeAllCachedToggles: function(request, sender, sendResponse) {
+            sendResponse({ toggles: cachedToggles });
+        },
+
+        updateThisToggle: function(request) {
+            FeatureBeeCentral.updateToggle(request.toggle);
+        },
+
+        tellMeIfThisUrlIsEligibleForFeatureBee: function (request, sender, sendResponse) {
+            sendResponse({ answer: FeatureBeeCentral.isToggleActiveEnvironment(request.url)});
+        },
+
+        updateCurrentEnvironments: function (request) {
+            FeatureBeeTogglesExtensionStorage.updateEnvironments(request.updatedEnvironments);
+        }
+    };
+
+    FeatureBeeCommunicationEngine.registerCommunicationListeners("chrome", listeners);
 
     this.reviseAndCacheToggles = function (toggles) {
         console.log("Revising and cahicng toggles");
@@ -74,5 +63,38 @@
         cachedToggles = toggles;
 
         return toggles;
+    };
+
+    this.updateToggle = function(toggle) {
+
+        FeatureBeeTogglesExtensionStorage.updateToggle(toggle);
+        for (var i = 0; i < cachedToggles.length; i++) {
+            if (cachedToggles[i].id == toggle.id) {
+                cachedToggles[i] = toggle;
+                break;
+            }
+        }
+
+        var config = FeatureBeeTogglesExtensionStorage.getConfiguration();
+
+        if (config.isAutoRefreshEnabled) {
+            FeatureBeeCommunicationEngine.tellWindowToRefresh();
+            return;
+        }
+
+        if (config.isToggleBarEnabled) {
+            FeatureBeeCommunicationEngine.tellWindowToRefreshToggleBar(cachedToggles);
+        }
+    };
+
+    this.isToggleActiveEnvironment = function(url) {
+        var environments = FeatureBeeTogglesExtensionStorage.getEnvironments();
+        for (var i in environments) {
+            if (new RegExp(environments[i].pattern).test(url)) {
+                return "yes";
+            }
+        }
+
+        return "no";
     };
 }

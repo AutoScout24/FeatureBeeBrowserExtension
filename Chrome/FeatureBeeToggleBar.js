@@ -10,7 +10,7 @@
     this.show = function (toggles) {
 
         var bar = createBar();
-        toggles = FeatureBeeToggleRepository.retrieveCurrentActiveToggles(toggles);
+        toggles = FeatureBeeClient.parseActiveToggles(toggles);
 
         console.log("Actives:");
         console.log(toggles);

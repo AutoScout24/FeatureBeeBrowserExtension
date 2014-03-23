@@ -57,22 +57,18 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Chrome\background.js" />
     <Content Include="Chrome\bee.png" />
     <Content Include="Chrome\bee_16.png" />
     <Content Include="Chrome\bee_24.png" />
     <Content Include="Chrome\bee_48.png" />
-    <Content Include="Chrome\CommunicationInterface.js" />
     <Content Include="Chrome\content_scripts.js" />
-    <Content Include="Chrome\Environments.js" />
     <Content Include="Chrome\FeatureBeeCentral.js" />
     <Content Include="Chrome\FeatureBeeCommunicationEngine.js" />
     <Content Include="Chrome\FeatureBeeToggleBar.js" />
     <Content Include="Chrome\FeatureBeeToggleExtensionController.js" />
-    <Content Include="Chrome\FeatureBeeToggleRepository.js" />
+    <Content Include="Chrome\FeatureBeeClient.js" />
     <Content Include="Chrome\FeatureBeeTogglesExtensionStorage.js" />
     <Content Include="Chrome\featurebee_extension.css" />
-    <Content Include="Chrome\initialize.js" />
     <Content Include="Chrome\on_off_button.css" />
     <Content Include="Chrome\options.css" />
     <Content Include="Chrome\options.html" />

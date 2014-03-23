@@ -5,7 +5,8 @@
     var config = {
         isToggleBarEnabled: false,
         isAutoRefreshEnabled: false,
-        lastUsedFilter: ""
+        lastUsedFilter: "",
+        environments: []
     };
 
     this.initCache = function() {
@@ -20,10 +21,20 @@
                 config = configuration;
             }
         });
+
+        retrieveEnvironments(function (foundEnvironments) {
+            if (foundEnvironments) {
+                config.environments = foundEnvironments;
+            }            
+        });
     };
 
     this.getCachedStoredToggles = function() {
         return storedToggles;
+    };
+
+    this.getEnvironments = function() {
+        return config.environments;
     };
 
     this.getConfiguration = function() {
@@ -32,8 +43,11 @@
 
     this.updateConfiguration = function (configuration) {
         config = configuration;
-        console.log("persist config");
-        console.log(config);
+        persistConfiguration();
+    };
+
+    this.updateEnvironments = function (environments) {
+        config.environments = environments;
         persistConfiguration();
     };
 
@@ -76,6 +90,24 @@
         chrome.storage.local.set({ "togglePersonalConfig": storedToggles });
     };
 
+    var retrieveEnvironments = function(callback) {
+        chrome.storage.local.get(null, function (value) {
+            console.log("retrieving enviroments");
+            console.log(value);
+            var environments = value.configuration.environments || [];
+
+            if (environments.length == 0) {
+                environments = [
+                    { name: "Autoscout24", pattern: "(autoscout24\.)" },
+                    { name: "AS24", pattern: "(as24\.)" },
+                    { name: "local", pattern: "(\.local)($|n*\/)" }
+                ];
+            }
+
+            callback(environments);
+        });
+    };
+
     var retrieveTogglePersonalConfig = function (callback) {        
         chrome.storage.local.get(null, function (value) {
             console.log(":");
@@ -92,7 +124,9 @@
         });
     };
 
-    var persistConfiguration = function() {
+    var persistConfiguration = function () {
+        console.log("persist config");
+        console.log(config);
         chrome.storage.local.set({ "configuration": config });
     };
 };

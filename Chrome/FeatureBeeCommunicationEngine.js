@@ -1,41 +1,74 @@
 ﻿FeatureBeeCommunicationEngine = new function() {
 
     this.tellChromeToReviseAndCacheToggles = function (toggles, callback) {
-        tellChrome({ msg: "chrome-reviseAndCacheToggles", toggles : toggles}, callback);
+        tellChromeTo({ msg: "reviseAndCacheToggles", toggles : toggles}, callback);
     };
 
     this.askChromeIfUrlIsEnabledForFeatureBee = function(url, answerCallback) {
-        tellChrome({ msg: "chrome-tellMeIfThisUrlIsEligibleForFeatureBee", url : url}, answerCallback);
+        tellChromeTo({ msg: "tellMeIfThisUrlIsEligibleForFeatureBee", url: url }, answerCallback);
     };
 
     this.tellChromeToGiveMeTheCurrentConfiguration = function(callback) {
-        tellChrome({ msg: "chrome-tellMeMyConfiguration" }, callback);
+        tellChromeTo({ msg: "tellMeMyConfiguration" }, callback);
     };
 
     this.tellChromeToSaveMeTheCurrentConfiguration = function (config, callback) {
-        tellChrome({ msg: "chrome-saveMyConfiguration", config : config }, callback);
+        tellChromeTo({ msg: "saveMyConfiguration", config: config }, callback);
     };
 
     this.tellChromeToGiveMeTheCachedToggles = function(callback) {
-        tellChrome({ msg: "chrome-giveMeAllCachedToggles" }, callback);
+        tellChromeTo({ msg: "giveMeAllCachedToggles" }, callback);
     };
 
     this.tellChromeToUpdateThisToggle = function (toggle, callback) {
-        tellChrome({ msg: "chrome-updateThisToggle", toggle : toggle }, callback);
+        tellChromeTo({ msg: "updateThisToggle", toggle: toggle }, callback);
+    };
+
+    this.tellChromeToUpdateEnvironments = function (environments, callback) {
+        tellChromeTo({ msg: "updateCurrentEnvironments", updatedEnvironments: environments }, callback);
     };
 
     this.tellWindowToRefresh = function() {
-        tellActiveTab("window-doAFullPageReload");
+        tellActiveTabTo("doAFullPageReload");
+    };
+
+    this.tellWindowToShowToolbar = function(toggles) {
+        tellActiveTabTo({ msg: "showToggleBar", toggles: toggles });
+    };
+
+    this.tellWindowToHideToolbar = function() {
+        tellActiveTabTo("hideToggleBar");
+    };
+
+    this.registerCommunicationListeners = function(engineName, listeners) {
+        chrome.runtime.onMessage.addListener(
+            function (request, sender, sendResponse) {
+                console.log("Message reached listener: " + request.msg);
+                var splittedMsg = request.msg.split("-");
+
+                if (splittedMsg[0] != engineName) {
+                    return;
+                }
+
+                var msg = splittedMsg[1];
+
+                if (msg in listeners) {
+                    listeners[msg](request, sender, sendResponse);
+                    console.log("executed");
+                }                
+            });
     };
 
     this.tellWindowToRefreshToggleBar = function (toggles) {
-        tellActiveTab({ msg: "window-refreshToggleBar", toggles: toggles });
+        tellActiveTabTo({ msg: "refreshToggleBar", toggles: toggles });
     };
 
-    var tellActiveTab = function (message, callback) {
+    var tellActiveTabTo = function (message, callback) {
         var request = typeof message === 'string'
             ? { msg: message }
             : message;
+
+        request.msg = "window-" + request.msg;
 
         console.log(request);
 
@@ -48,10 +81,12 @@
         });
     };
 
-    var tellChrome = function(message, callback) {
+    var tellChromeTo = function(message, callback) {
         var request = typeof message === 'string'
             ? { msg: message }
             : message;
+
+        request.msg = "chrome-" + request.msg;
 
         console.log(request);
 

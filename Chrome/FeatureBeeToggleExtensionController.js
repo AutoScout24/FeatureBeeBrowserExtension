@@ -160,9 +160,11 @@
         });
 
         if (showToggleBarCheckbox.checked) {
-            CommunicationInterface.showToggleBar();
+            FeatureBeeCommunicationEngine.tellChromeToGiveMeTheCachedToggles(function (response) {
+                FeatureBeeCommunicationEngine.tellWindowToShowToolbar(response.toggles);
+            });            
         } else {
-            CommunicationInterface.hideToggleBar();
+            FeatureBeeCommunicationEngine.tellWindowToHideToolbar();
         }
     };
 
