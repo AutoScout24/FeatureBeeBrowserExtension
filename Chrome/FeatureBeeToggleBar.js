@@ -2,15 +2,15 @@
 
     var barId = 'featurebeeToggleBarId';    
 
-    this.reload = function() {
+    this.reload = function(toggles) {
         this.removeBar();
-        this.show();
+        this.show(toggles);
     };
 
-    this.show = function () {
+    this.show = function (toggles) {
 
-        var toggles = FeatureBeeToggleRepository.retrieveCurrentActiveToggles();
         var bar = createBar();
+        toggles = FeatureBeeToggleRepository.retrieveCurrentActiveToggles(toggles);
 
         console.log("Actives:");
         console.log(toggles);
@@ -30,7 +30,6 @@
     this.hide = function () {
         this.removeBar();
         document.body.style.marginTop = '0px';
-        FeatureBeeTogglesExtensionStorage.setToogleBarOff();
     };
 
     this.removeBar = function() {

@@ -1,25 +1,31 @@
-﻿FeatureBeeToggleExtensionController = new function() {
+﻿FeatureBeeToggleExtensionController = new function () {
 
     var currentToggles = null;
-    
+
     var toggleListObj = document.querySelector('#toggles');
     var showToggleBarCheckbox = document.getElementById("showToggleBar");
     var autoRefreshLastStatusCheckbox = document.getElementById("autoRefresh");
     var filterObj = document.getElementById("filterSelect");
 
-    this.popup = function (togglesList) {
-        currentToggles = togglesList;
-        buildTogglesList(currentToggles);
+    this.popup = function () {
+        FeatureBeeCommunicationEngine.tellChromeToGiveMeTheCachedToggles(function(response) {
+            currentToggles = response.toggles;
+            buildTogglesList(response.toggles);
+        });
     };
 
     this.filterToggles = function () {
-        FeatureBeeTogglesExtensionStorage.persistFilter(getCurrentSelectedFilter());
-        buildTogglesList(currentToggles);
+        FeatureBeeCommunicationEngine.tellChromeToGiveMeTheCurrentConfiguration(function (response) {
+            var configuration = response.config;
+            configuration.lastUsedFilter = getCurrentSelectedFilter();
+            FeatureBeeCommunicationEngine.tellChromeToSaveMeTheCurrentConfiguration(configuration);
+            buildTogglesList(currentToggles);
+        });        
     };
 
     this.updateToggleStatus = function (toggle, enabled) {
         toggle.Enabled = enabled;
-        CommunicationInterface.updateToggle(toggle, autoRefreshLastStatusCheckbox.checked);
+        FeatureBeeCommunicationEngine.tellChromeToUpdateThisToggle(toggle);
 
         if (autoRefreshLastStatusCheckbox.checked) {
             window.close();
@@ -32,7 +38,7 @@
         if (filter && filter != "" && filter != toggle.Team) {
             return;
         }
-        
+
         var toggleDiv = createDiv("toggle");
         var switchDiv = createSwitchDiv(toggle);
         var toggleNameDiv = createToggleNameDiv(toggle.Name);
@@ -51,6 +57,7 @@
 
     function buildTogglesList(toggles) {
         console.log("buildTogglesList");
+        console.log(toggles);
         clearTogglesList();
 
         if (toggles.length === 0) {
@@ -145,44 +152,47 @@
         return div;
     }
 
-    var handleToggleBarStatus = function() {
+    var handleToggleBarStatus = function () {
+        FeatureBeeCommunicationEngine.tellChromeToGiveMeTheCurrentConfiguration(function (response) {
+            var config = response.config;
+            config.isToggleBarEnabled = showToggleBarCheckbox.checked;
+            FeatureBeeCommunicationEngine.tellChromeToSaveMeTheCurrentConfiguration(config);
+        });
+
         if (showToggleBarCheckbox.checked) {
             CommunicationInterface.showToggleBar();
-            FeatureBeeTogglesExtensionStorage.setToogleBarOn();
         } else {
             CommunicationInterface.hideToggleBar();
-            FeatureBeeTogglesExtensionStorage.setToogleBarOff();
         }
     };
 
     var handleAutoRefreshLastStatus = function () {
-        if (autoRefreshLastStatusCheckbox.checked) {
-            FeatureBeeTogglesExtensionStorage.setAutoRefreshLastStatusOn();
-        } else {
-            FeatureBeeTogglesExtensionStorage.setAutoRefreshLastStatusOff();
-        }
+        FeatureBeeCommunicationEngine.tellChromeToGiveMeTheCurrentConfiguration(function (response) {
+            var config = response.config;
+            config.isAutoRefreshEnabled = autoRefreshLastStatusCheckbox.checked;
+            FeatureBeeCommunicationEngine.tellChromeToSaveMeTheCurrentConfiguration(config);
+        });
     };
 
     var init = function () {
 
         chrome.tabs.query({ currentWindow: true, active: true }, function (currentTab) {
-            if (!FeatureBeeToggleActiveEnviroments.isToggleActiveEnvironment(currentTab[0].url)) {                
-                document.getElementById("noToggleActiveMessage").style.display = "block";
-                document.getElementById("togglesContainer").style.display = "none";
-            }
+            FeatureBeeCommunicationEngine.askChromeIfUrlIsEnabledForFeatureBee(currentTab[0].url, function (response) {
+                if (response.answer == "no") {
+                    document.getElementById("noToggleActiveMessage").style.display = "block";
+                    document.getElementById("togglesContainer").style.display = "none";
+                }
+            });
         });
 
-        FeatureBeeTogglesExtensionStorage.getToggleBarStatus(function (enabled) {
-            showToggleBarCheckbox.checked = enabled;
-        });
+        FeatureBeeCommunicationEngine.tellChromeToGiveMeTheCurrentConfiguration(function (response) {
+            var configuration = response.config;
+            console.log(configuration);
+            showToggleBarCheckbox.checked = configuration.isToggleBarEnabled;
+            autoRefreshLastStatusCheckbox.checked = configuration.isAutoRefreshEnabled;
 
-        FeatureBeeTogglesExtensionStorage.getAutoRefreshLastStatus(function (enabled) {
-            autoRefreshLastStatusCheckbox.checked = enabled;
-        });
-
-        FeatureBeeTogglesExtensionStorage.retrieveLastUsedFilter(function(filter) {
             for (var o in filterObj.options) {
-                if (filterObj.options[o].value == filter) {
+                if (filterObj.options[o].value == configuration.lastUsedFilter) {
                     filterObj.options[o].selected = true;
                 }
             }
@@ -193,4 +203,6 @@
     }();
 
     filterObj.addEventListener("change", this.filterToggles);
+    this.popup();
+    console.log("Finished loading extension");
 }

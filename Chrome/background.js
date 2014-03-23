@@ -41,8 +41,8 @@ chrome.runtime.onMessage.addListener(
           console.log("msg is there: " + msg);
 
           switch (msg) {
-              case "isThisUrlEligibleForFeatureBee?":
-                  console.log("Responding to isThisUrlEligibleForFeatureBee? about " + request.url);
+              case "chrome-tellMeIfThisUrlIsEligibleForFeatureBee":
+                  console.log("Responding to tellMeIfThisUrlIsEligibleForFeatureBee about " + request.url);
                   sendResponse({ answer: FeatureBeeToggleActiveEnviroments.isToggleActiveEnvironment(request.url) ? "yes" : "no"});
                   break;
               case "updateCurrentEnvironments":

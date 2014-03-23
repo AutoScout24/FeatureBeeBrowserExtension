@@ -1,54 +1,82 @@
-﻿FeatureBeeTogglesExtensionStorage = new function(){
-    
-    this.getToggleBarStatus = function (callback) {        
-        chrome.storage.local.get(null, function (value) {
-            callback(value.toggleBarOnOffValueName);
+﻿FeatureBeeTogglesExtensionStorage = new function () {
+
+    var storedToggles = [];
+
+    var config = {
+        isToggleBarEnabled: false,
+        isAutoRefreshEnabled: false,
+        lastUsedFilter: ""
+    };
+
+    this.initCache = function() {
+        retrieveTogglePersonalConfig(function (toggles) {
+            if (toggles) {
+                storedToggles = toggles;
+            }            
         });
+
+        retrieveConfiguration(function (configuration) {
+            if (configuration) {
+                config = configuration;
+            }
+        });
+    };
+
+    this.getCachedStoredToggles = function() {
+        return storedToggles;
+    };
+
+    this.getConfiguration = function() {
+        return config;
+    };
+
+    this.updateConfiguration = function (configuration) {
+        config = configuration;
+        console.log("persist config");
+        console.log(config);
+        persistConfiguration();
     };
 
     this.setToogleBarOn = function() {
-        chrome.storage.local.set({ "toggleBarOnOffValueName": true });
+        config.isToggleBarEnabled = true;
+        persistConfiguration();
     };
 
     this.setToogleBarOff = function() {
-        chrome.storage.local.set({ "toggleBarOnOffValueName": false });
-    };
-
-    this.getAutoRefreshLastStatus = function (callback) {
-        chrome.storage.local.get(null, function (value) {
-            callback(value.autoRefreshLastStatus);
-        });
+        config.isToggleBarEnabled = false;
+        persistConfiguration();
     };
 
     this.setAutoRefreshLastStatusOn = function () {
-        chrome.storage.local.set({ "autoRefreshLastStatus": true });
+        config.isAutoRefreshEnabled = true;
+        persistConfiguration();
     };
 
     this.setAutoRefreshLastStatusOff = function () {
-        chrome.storage.local.set({ "autoRefreshLastStatus": false });
+        config.isAutoRefreshEnabled = false;
+        persistConfiguration();
+    };
+    
+    this.setFilter = function (filter) {
+        config.lastUsedFilter = filter;
+        persistConfiguration();
     };
 
-    this.persistTogglePersonalConfig = function (toggle) {
-        console.log("Persisting toggle: " + toggle.Name);
-        this.retrieveTogglePersonalConfig(function (value) {
-            var fullToggleConfig = value || [];
+    this.updateToggle = function (toggle) {
+        console.log("Updating toggle");
+        console.log(toggle);
+        for (var i in storedToggles) {
+            if (storedToggles[i] == toggle.id) {
+                storedToggles = storedToggles.splice(i, 1);
+                break;
+            }
+        };
 
-            for (var i in fullToggleConfig) {
-                if (fullToggleConfig[i] == toggle.id) {
-                    fullToggleConfig = fullToggleConfig.splice(i, 1);
-                    break;
-                }
-            };
-
-            fullToggleConfig.push(toggle);
-
-            chrome.storage.local.set({ "togglePersonalConfig": fullToggleConfig });
-            console.log("Storage after persist:");
-            console.log(chrome.storage.local);
-        });        
+        storedToggles.push(toggle);
+        chrome.storage.local.set({ "togglePersonalConfig": storedToggles });
     };
 
-    this.retrieveTogglePersonalConfig = function (callback) {        
+    var retrieveTogglePersonalConfig = function (callback) {        
         chrome.storage.local.get(null, function (value) {
             console.log(":");
             console.log(value);
@@ -56,13 +84,15 @@
         });        
     };
 
-    this.retrieveLastUsedFilter = function (callback) {
-        chrome.storage.local.get(null, function (value) {
-            callback(value.lastUsedFilter);
+    var retrieveConfiguration = function(callback) {
+        chrome.storage.local.get(null, function(value) {
+            console.log("configuration:");
+            console.log(value);
+            callback(value.configuration);
         });
     };
 
-    this.persistFilter = function (filter) {
-        chrome.storage.local.set({ "lastUsedFilter": filter });
+    var persistConfiguration = function() {
+        chrome.storage.local.set({ "configuration": config });
     };
 };

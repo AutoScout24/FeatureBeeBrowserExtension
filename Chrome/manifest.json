@@ -1,6 +1,6 @@
 {
   "name": "FeatureBee",
-  "version": "0.2.1",
+  "version": "0.3",
   "description": "A chrome extension to support the using of FeatureBee",
   "permissions": [
 	"tabs",
@@ -20,15 +20,15 @@
              "48": "bee.png",
              "128": "bee.png" 
   },
-   "content_scripts": [
+   "content_scripts": [	
     {
       "matches": ["*://*/*"],
-      "js": ["FeatureBeeTogglesExtensionStorage.js", "Environments.js", "FeatureBeeToggleRepository.js", "FeatureBeeToggleBar.js", "content_scripts.js"],
+      "js": ["FeatureBeeCommunicationEngine.js", "FeatureBeeTogglesExtensionStorage.js", "Environments.js", "FeatureBeeToggleRepository.js", "FeatureBeeToggleBar.js", "content_scripts.js"],
 	  "css" : ["toggle_bar.css"]
     }
   ],
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["FeatureBeeTogglesExtensionStorage.js", "FeatureBeeCommunicationEngine.js", "FeatureBeeCentral.js", "background.js"]
   },
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' https://ajax.googleapis.com 'unsafe-eval'; object-src 'self'",

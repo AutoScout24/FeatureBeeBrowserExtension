@@ -1,20 +1,18 @@
 ﻿(function () {
 
-    chrome.runtime.sendMessage({ msg: "isThisUrlEligibleForFeatureBee?", url: document.URL }, function (response) {
+    FeatureBeeCommunicationEngine.askChromeIfUrlIsEnabledForFeatureBee(document.URL, function (response) {
         console.log("they said " + response.answer + " to url " + document.URL);
 
         if (response.answer == "yes") {
-            FeatureBeeToggleRepository.refreshCurrentToggles();
-            FeatureBeeToggleRepository.updateCookieForActiveToggles();
 
-            if (localStorage["featureBeeToggleBar"] === "show") {
-                FeatureBeeToggleBar.show();
-            }
-
-            window.addEventListener("unload", function (e) {
-                FeatureBeeToggleRepository.refreshCurrentToggles();
-                FeatureBeeToggleRepository.updateCookieForActiveToggles();
-            }, false);
+            FeatureBeeCommunicationEngine.tellChromeToReviseAndCacheToggles(FeatureBeeToggleRepository.getFeatureBeeServerToggles(), function(togglesResponse) {
+                FeatureBeeCommunicationEngine.tellChromeToGiveMeTheCurrentConfiguration(function(configResponse) {
+                    if (configResponse.config.isToggleBarEnabled) {
+                        FeatureBeeToggleBar.show(togglesResponse.toggles);
+                    }
+                });
+                FeatureBeeToggleRepository.updateCookieForActiveToggles(togglesResponse.toggles);
+            });
         }
     });
     
@@ -24,33 +22,39 @@
           console.log("msg is there: " + msg);
 
           switch (msg) {
-              case "giveMeTheCurrentToggleConfiguration":
-                  console.log("Responding to giveMeTheCurrentToggleConfiguration");
-                  sendResponse({ result: FeatureBeeToggleRepository.currentToggles });
-                  break;
-              case "updateThisToggle":
-                  console.log("Responding to updateThisToggle");
-                  console.log(request.toggle);
-                  FeatureBeeToggleRepository.updateToggleStatus(request.toggle);
-                  FeatureBeeToggleRepository.updateCookieForActiveToggles();
-                  sendResponse({ result: true });
-                  if (request.reloadCurrentPage) {
-                      location.reload(true);
-                  } else {
-                      if (localStorage["featureBeeToggleBar"] === "show") {
-                          FeatureBeeToggleBar.reload();
-                      }                      
-                  }
-                  break;
+              //case "giveMeTheCurrentToggleConfiguration":
+              //    console.log("Responding to giveMeTheCurrentToggleConfiguration");
+              //    sendResponse({ result: FeatureBeeToggleRepository.currentToggles });
+              //    break;
+              //case "updateThisToggle":
+              //    console.log("Responding to updateThisToggle");
+              //    console.log(request.toggle);
+              //    FeatureBeeToggleRepository.updateToggleStatus(request.toggle);
+              //    FeatureBeeToggleRepository.updateCookieForActiveToggles();
+              //    sendResponse({ result: true });
+              //    if (request.reloadCurrentPage) {
+              //        location.reload(true);
+              //    } else {
+              //        if (localStorage["featureBeeToggleBar"] === "show") {
+              //            FeatureBeeToggleBar.reload();
+              //        }                      
+              //    }
+              //    break;
               case "showToggleBar":
                   console.log("Responding to showToggleBar");
-                  localStorage["featureBeeToggleBar"] = "show";
+                  //localStorage["featureBeeToggleBar"] = "show";
                   FeatureBeeToggleBar.show();
                   break;
               case "hideToggleBar":
                   console.log("Responding to hideToggleBar");
-                  localStorage["featureBeeToggleBar"] = "hide";
+                  //localStorage["featureBeeToggleBar"] = "hide";
                   FeatureBeeToggleBar.hide();
+                  break;
+              case "window-doAFullPageReload":
+                  location.reload(true);
+                  break;
+              case "window-refreshToggleBar":
+                  FeatureBeeToggleBar.reload(request.toggles);
                   break;
           default:
           }

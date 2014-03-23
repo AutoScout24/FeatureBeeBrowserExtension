@@ -65,9 +65,10 @@
     <Content Include="Chrome\CommunicationInterface.js" />
     <Content Include="Chrome\content_scripts.js" />
     <Content Include="Chrome\Environments.js" />
+    <Content Include="Chrome\FeatureBeeCentral.js" />
+    <Content Include="Chrome\FeatureBeeCommunicationEngine.js" />
     <Content Include="Chrome\FeatureBeeToggleBar.js" />
     <Content Include="Chrome\FeatureBeeToggleExtensionController.js" />
-    <Content Include="Chrome\FeatureBeeToggleInitiator.js" />
     <Content Include="Chrome\FeatureBeeToggleRepository.js" />
     <Content Include="Chrome\FeatureBeeTogglesExtensionStorage.js" />
     <Content Include="Chrome\featurebee_extension.css" />

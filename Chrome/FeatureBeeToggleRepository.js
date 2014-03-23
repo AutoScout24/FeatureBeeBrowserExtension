@@ -6,6 +6,30 @@
         return localStorage["featureBeeTogglesOverrides"] ? JSON.parse(localStorage["featureBeeTogglesOverrides"]) : [];
     };
 
+    this.getFeatureBeeServerToggles = function() {
+        var parser = document.createElement('a');
+        parser.href = document.URL;
+        var featurebeeFeaturesPath = parser.host + '/featurebee.axd/features';
+
+        var request = new XMLHttpRequest();
+        request.open('GET', featurebeeFeaturesPath, false);
+        request.send(null);
+
+        var toggles = [];
+
+        if (request.status === 200) {
+            toggles = eval(request.responseText);
+        }
+
+        for (var i = 0; i < toggles.length; i++) {
+            toggles[i].id = toggles[i].Name;
+        }
+
+        console.log("contacted featurebee server:");
+        console.log(toggles);
+        return toggles;
+    };
+
     this.refreshCurrentToggles = function () {
 
         var parser = document.createElement('a');
@@ -47,12 +71,12 @@
         this.currentToggles = currentToggles;
     };
 
-    this.retrieveCurrentActiveToggles = function() {
+    this.retrieveCurrentActiveToggles = function(toggles) {
         var activeToggles = [];
 
-        for (var a in this.currentToggles) {
-            if (this.currentToggles[a].Enabled) {
-                activeToggles.push(this.currentToggles[a]);
+        for (var a in toggles) {
+            if (toggles[a].Enabled) {
+                activeToggles.push(toggles[a]);
             }
         }
 
@@ -60,8 +84,8 @@
 
     };
 
-    this.updateCookieForActiveToggles = function () {
-        var activeToggles = this.retrieveCurrentActiveToggles();
+    this.updateCookieForActiveToggles = function (toggles) {
+        var activeToggles = this.retrieveCurrentActiveToggles(toggles);
         var d = new Date();
         d.setTime(d.getTime() + (24 * 60 * 60 * 1000));
         var value = "";
