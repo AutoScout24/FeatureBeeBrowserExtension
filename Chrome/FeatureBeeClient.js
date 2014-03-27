@@ -23,9 +23,7 @@
     FeatureBeeCommunicationEngine.registerCommunicationListeners("window", listeners);
 
     this.getFeatureBeeServerToggles = function() {
-        var parser = document.createElement('a');
-        parser.href = document.URL;
-        var featurebeeFeaturesPath = parser.host + '/featurebee.axd/features';
+        var featurebeeFeaturesPath = window.location.prototype + "//" + window.location.host + '/featurebee.axd/features';
 
         var request = new XMLHttpRequest();
         request.open('GET', featurebeeFeaturesPath, false);
