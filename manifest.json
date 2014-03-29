@@ -16,9 +16,9 @@
       "default_icon": "Images/bee.png",
       "default_popup": "popup.html"
   },
-  "icons": { "16": "Images/bee.png",
-             "48": "Images/bee.png",
-             "128": "Images/bee.png" 
+  "icons": { "16": "Images/bee_16.png",
+             "48": "Images/bee_48.png",
+             "128": "Images/bee_128.png" 
   },
    "content_scripts": [	
     {
