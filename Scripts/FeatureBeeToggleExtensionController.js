@@ -2,11 +2,7 @@
 
     var currentToggles = null;
 
-    var toggleListObj = document.getElementById('toggles');
-    var toggleListContainerObj = document.getElementById('togglesListContainer');
-    var myToggleListObj = document.getElementById('myTogglesList');
-    var myToggleContainerObj = document.getElementById('myToggles');
-    var addToListListObj = document.querySelector('#addExistingTogglesToList');
+    var addToListListObj = document.querySelector('#addExistingTogglesToList'); 
     var showToggleBarCheckbox = document.getElementById("showToggleBar");
     var autoRefreshLastStatusCheckbox = document.getElementById("autoRefresh");
     var filterObj = document.getElementById("filterSelect");
@@ -44,31 +40,58 @@
             return;
         }
 
-        var toggleDiv = createDiv("toggle");
-        var switchDiv = toggle.isLocal ? createSwitchDiv(toggle) : createAddDiv(toggle);
-        var toggleNameDiv = createToggleNameDiv(toggle.Name);
-        var toggleStatus = createToggleStatusDiv(toggle.State);
-
-        toggleDiv.appendChild(toggleStatus);
-        toggleDiv.appendChild(switchDiv);
-        toggleDiv.appendChild(toggleNameDiv);
-
         if (toggle.isLocal) {
-            var forgetToggleDiv = createDiv("container_cell forget-toggle");
-            forgetToggleDiv.innerText = "(forget)";            
-            forgetToggleDiv.addEventListener('click', function () {
-                FeatureBeeCommunicationEngine.tellChromeToForgetThisToggle(toggle);
-                FeatureBeeCommunicationEngine.tellChromeToGiveMeTheCachedToggles(function (response) {
-                    buildTogglesList(response.toggles);
-
-                });
-            });
-            toggleDiv.appendChild(forgetToggleDiv);
-            myToggleListObj.appendChild(toggleDiv);
+            addToggleDiv(
+                $("#content_my_toggles"),
+                createForgetDiv(toggle),
+                createSwitchDiv(toggle),
+                createToggleNameDiv(toggle.Name),
+                createToggleStatusDiv(toggle.State)
+            );
         } else {
-            toggleListObj.appendChild(toggleDiv);
+            addToggleDiv(
+               $("#content_add_toggles"),
+               createAddDiv(toggle),
+               createToggleNameDiv(toggle.Name),
+               createToggleStatusDiv(toggle.State)
+           );
         }
     };
+
+    function addToggleDiv(contentDiv, div1, div2, div3, div4) {
+        var toggleDiv = createDiv("toggle");
+        if(div1) toggleDiv.appendChild(div1);
+        if(div2) toggleDiv.appendChild(div2);
+        if(div3) toggleDiv.appendChild(div3);
+        if(div4) toggleDiv.appendChild(div4);
+
+        contentDiv.appendChild(toggleDiv);
+    }
+
+    function createForgetDiv(toggle) {
+        var div = createDiv("toggle_item toggle_button forget_button");
+        div.addEventListener('click', function() {
+            FeatureBeeCommunicationEngine.tellChromeToForgetThisToggle(toggle);
+            FeatureBeeCommunicationEngine.tellChromeToGiveMeTheCachedToggles(function(response) {
+                buildTogglesList(response.toggles);
+            });
+        });
+
+        return div;
+    }
+
+    function createAddDiv(toggle) {
+        var div = createDiv("toggle_item toggle_button add_button");
+
+        div.addEventListener('click', function () {
+            FeatureBeeCommunicationEngine.tellChromeToUpdateThisToggle(toggle);
+            FeatureBeeCommunicationEngine.tellChromeToGiveMeTheCachedToggles(function (response) {
+                buildTogglesList(response.toggles);
+                displayMyTogglesView();
+            });
+        });
+        return div;
+    }
 
     function getCurrentSelectedFilter() {
         return filterObj.options[filterObj.selectedIndex].value;
@@ -77,33 +100,20 @@
     function buildTogglesList(toggles) {
         console.log("buildTogglesList");
         console.log(toggles);
+
         clearTogglesList();
-
-        if (toggles.length === 0) {
-            var noToggle = document.createElement('span');
-            noToggle.innerText = "No Toggles found";
-            noToggle.className = "toggle";
-            toggleListObj.appendChild(noToggle);
-        }
-
+        
         for (var i in toggles) {
             addToggleToList(toggles[i]);
         }
     }
 
     function clearTogglesList() {
-
-        var filterNode = document.getElementById("filter");
-
-        while (toggleListObj.firstChild) {
-            toggleListObj.removeChild(toggleListObj.firstChild);
-        }
-
-        while (myToggleListObj.firstChild) {
-            myToggleListObj.removeChild(myToggleListObj.firstChild);
-        }
-
-        toggleListObj.appendChild(filterNode);
+        $each(".content[data-content='togglesList']", function(div) {
+            while (div.firstChild) {
+                div.removeChild(div.firstChild);
+            }
+        });
     }
 
     function createDiv(classes) {
@@ -113,51 +123,18 @@
     };
 
     function createToggleNameDiv(name) {
-        var div = createDiv("container_cell toggle_text");
+        var div = createDiv("toggle_item");
         div.innerText = name;
         return div;
     }
 
     function createToggleStatusDiv(status) {
-        var className;
+        var statusDiv = createDiv("toggle_item toggle_status");
+        statusDiv.innerText = "(" + status + ")";
 
-        switch (status) {
-            case "In Development":
-                className = "toggle_status_development";
-                break;
-            case "Under Test":
-                className = "toggle_status_under_test";
-                break;
-            case "Released":
-                className = "toggle_status_released";
-                break;
-            default:
-                className = "";
-        }
-
-        var statusContainer = createDiv("container_cell toggle_status_container");
-        var statusDiv = createDiv("toggle_status_item " + className);
-        statusContainer.appendChild(statusDiv);
-
-        return statusContainer;
+        return statusDiv;
     }
-
-    function createAddDiv(toggle) {
-        var div = createDiv("container_cell add_to_my_toggles");
-        div.innerText = "Add";
-
-        div.addEventListener('click', function () {
-            FeatureBeeCommunicationEngine.tellChromeToUpdateThisToggle(toggle);
-            FeatureBeeCommunicationEngine.tellChromeToGiveMeTheCachedToggles(function(response) {
-                buildTogglesList(response.toggles);
-                myToggleContainerObj.style.display = "block";
-                toggleListContainerObj.style.display = "none";
-            });
-        });
-
-        return div;
-    }
-
+    
     function createSwitchDiv(toggle) {
         var div = createDiv("onoffswitch container_cell");
 
@@ -188,7 +165,10 @@
         div.appendChild(checkbox);
         div.appendChild(label);
 
-        return div;
+        var divSwitchContainer = createDiv("toggle_item");
+        divSwitchContainer.appendChild(div);
+
+        return divSwitchContainer;
     }
 
     var handleToggleBarStatus = function () {
@@ -215,13 +195,38 @@
         });
     };
 
+    function setSectionTitle(title) {
+        $("#sectionTitle").innerText = title;
+    }
+
+    function displayAddTogglesView() {
+        $showContent("#content_add_toggles");
+        $deactivate("#addExistingTogglesToList");
+        $activate("#backToMyTogglesList");
+        setSectionTitle("Available Toggles");
+    }
+
+    function displayMyTogglesView() {
+        $showContent("#content_my_toggles");
+        $activate("#addExistingTogglesToList");
+        $deactivate("#backToMyTogglesList");
+        setSectionTitle("My Toggles");
+    }
+
+    function displayWarningView(message) {
+        setSectionTitle("Warning");
+        $showContent("#content_warn_stop_message");
+        $("#headerActions").style.display = "none";
+        $(".subheader").style.display = "none";
+        $writeIn('.warning_message', message);
+    }
+
     var init = function () {
 
         chrome.tabs.query({ currentWindow: true, active: true }, function (currentTab) {
             FeatureBeeCommunicationEngine.askChromeIfUrlIsEnabledForFeatureBee(currentTab[0].url, function (response) {
                 if (response.answer == "no") {
-                    document.getElementById("noToggleActiveMessage").style.display = "block";
-                    document.getElementById("togglesContainer").style.display = "none";
+                    displayWarningView("The current browser tab is not recognized as a Featurebee enviroment");
                 }
             });
         });
@@ -242,20 +247,17 @@
         showToggleBarCheckbox.addEventListener('click', handleToggleBarStatus, false);
         autoRefreshLastStatusCheckbox.addEventListener('click', handleAutoRefreshLastStatus, false);
     }();
-    
-    toggleListContainerObj.style.display = "none";
 
-    addToListListObj.addEventListener("click", function() {
-        myToggleContainerObj.style.display = "none";
-        toggleListContainerObj.style.display = "block";
+    addToListListObj.addEventListener("click", function () {
+        displayAddTogglesView();
     });
 
     backToMyTogglesListObj.addEventListener("click", function () {
-        myToggleContainerObj.style.display = "block";
-        toggleListContainerObj.style.display = "none";
+        displayMyTogglesView();
     });
 
     filterObj.addEventListener("change", this.filterToggles);
+
     this.popup();
     console.log("Finished loading extension");
 }

@@ -57,29 +57,36 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Chrome\bee.png" />
-    <Content Include="Chrome\bee_16.png" />
-    <Content Include="Chrome\bee_24.png" />
-    <Content Include="Chrome\bee_48.png" />
-    <Content Include="Chrome\content_scripts.js" />
-    <Content Include="Chrome\FeatureBeeCentral.js" />
-    <Content Include="Chrome\FeatureBeeCommunicationEngine.js" />
-    <Content Include="Chrome\FeatureBeeToggleBar.js" />
-    <Content Include="Chrome\FeatureBeeToggleExtensionController.js" />
-    <Content Include="Chrome\FeatureBeeClient.js" />
-    <Content Include="Chrome\FeatureBeeTogglesExtensionStorage.js" />
-    <Content Include="Chrome\featurebee_extension.css" />
-    <Content Include="Chrome\on_off_button.css" />
-    <Content Include="Chrome\options.css" />
-    <Content Include="Chrome\options.html" />
-    <Content Include="Chrome\options.js" />
-    <Content Include="Chrome\popup.html" />
-    <Content Include="Chrome\test_data.js" />
-    <Content Include="Chrome\toggle_bar.css" />
+    <Content Include="Images\bee.png" />
+    <Content Include="Images\bee_16.png" />
+    <Content Include="Images\bee_24.png" />
+    <Content Include="Images\bee_48.png" />
+    <Content Include="Scripts\content_scripts.js" />
+    <Content Include="Scripts\FeatureBeeCentral.js" />
+    <Content Include="Scripts\FeatureBeeToggleBar.js" />
+    <Content Include="Scripts\FeatureBeeClient.js" />
+    <Content Include="Scripts\FeatureBeeTogglesExtensionStorage.js" />
+    <Content Include="Styles\options.css" />
+    <Content Include="options.html" />
+    <Content Include="Scripts\options.js" />
+    <Content Include="Test\test_data.js" />
+    <Content Include="Styles\toggle_bar.css" />
+    <Content Include="Images\add.png" />
+    <Content Include="Images\add_hover.png" />
+    <Content Include="Images\feabee_header.png" />
+    <Content Include="Images\stop.png" />
+    <Content Include="popup.html" />
+    <Content Include="Scripts\FeatureBeeCommunicationEngine.js" />
+    <Content Include="Scripts\FeatureBeeToggleExtensionController.js" />
+    <Content Include="Scripts\util.js" />
+    <Content Include="Styles\featurebee_extension.css" />
+    <Content Include="Styles\on_off_button.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Chrome\manifest.json" />
+    <Content Include="Images\feabee_header.psd" />
+    <Content Include="Images\add.psd" />
+    <Content Include="manifest.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
