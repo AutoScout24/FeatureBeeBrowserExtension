@@ -2,6 +2,7 @@
 
     var cachedToggles = [];
     var lastRevisedToggles = [];
+    var hasEverSetCache = false;
 
     FeatureBeeTogglesExtensionStorage.initCache();
 
@@ -21,7 +22,7 @@
         },
 
         giveMeAllCachedToggles: function(request, sender, sendResponse) {
-            sendResponse({ toggles: cachedToggles });
+            sendResponse({ toggles: hasEverSetCache ? cachedToggles : null });
         },
 
         updateThisToggle: function(request) {
@@ -95,6 +96,7 @@
         console.log("caching toggles");
         console.log(toggles);
         cachedToggles = toggles;
+        hasEverSetCache = true;
 
         return toggles;
     };

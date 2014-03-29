@@ -9,7 +9,13 @@
     var backToMyTogglesListObj = document.getElementById("backToMyTogglesList");
 
     this.popup = function () {
-        FeatureBeeCommunicationEngine.tellChromeToGiveMeTheCachedToggles(function(response) {
+        FeatureBeeCommunicationEngine.tellChromeToGiveMeTheCachedToggles(function (response) {
+
+            if (!response.toggles) {
+                displayWarningView("It was not possible to load the toggles for current browser tab. Please refresh current tab and try again.");
+                return;
+            }
+
             currentToggles = response.toggles;
             buildTogglesList(response.toggles);
         });
@@ -214,7 +220,7 @@
     }
 
     function displayWarningView(message) {
-        setSectionTitle("Warning");
+        setSectionTitle("Oooooops!");
         $showContent("#content_warn_stop_message");
         $("#headerActions").style.display = "none";
         $(".subheader").style.display = "none";
