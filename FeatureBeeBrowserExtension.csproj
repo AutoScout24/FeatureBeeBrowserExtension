@@ -58,8 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\bee.png" />
+    <Content Include="Images\bee_128.png" />
     <Content Include="Images\bee_16.png" />
-    <Content Include="Images\bee_24.png" />
     <Content Include="Images\bee_48.png" />
     <Content Include="Scripts\content_scripts.js" />
     <Content Include="Scripts\FeatureBeeCentral.js" />

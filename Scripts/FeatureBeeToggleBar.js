@@ -44,7 +44,7 @@
         var container = document.createElement('ul');
         container.id = barId;
         container.className = "toggle-bar-container";
-        container.style.height = '30px';
+        container.style.height = '40px';
 
         container.appendChild(createHeader());
         return container;
@@ -96,11 +96,6 @@
         var headerImage = document.createElement('span');
         headerImage.className = "toggle-bar-img-header";
 
-        var headerTitle = document.createElement('span');
-        headerTitle.className = "toggle-bar-header_title";
-        headerTitle.innerText = "FeatureBee   | ";
-
-        headerImage.appendChild(headerTitle);
         headerContainer.appendChild(headerImage);
 
         return headerContainer;
