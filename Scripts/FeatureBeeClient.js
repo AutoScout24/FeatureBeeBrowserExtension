@@ -75,7 +75,7 @@
 
         var expires = "expires=" + d.toGMTString();
         //document.cookie = "featureBee=" + encodeURIComponent(value) + "; " + expires + ";domain=" + parseDomain(document.URL) + ";path=/";
-        document.cookie = "featureBee=" + encodeURIComponent(value) + "; " + expires;
+        document.cookie = "featureBee=" + encodeURIComponent(value) + "; " + expires + ";path=/";
     };    
 
     function parseDomain(url) {
