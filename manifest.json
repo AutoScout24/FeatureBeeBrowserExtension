@@ -12,7 +12,7 @@
 	"webRequest"
   ],
   "browser_action": {
-      "default_title": "FeatureBee Browser Extension",
+      "default_title": "FeatureBee Chrome Extension",
       "default_icon": "Images/bee.png",
       "default_popup": "popup.html"
   },
