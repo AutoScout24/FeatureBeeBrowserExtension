@@ -1,6 +1,6 @@
 {
   "name": "FeatureBee",
-  "version": "0.5",
+  "version": "0.5.1",
   "description": "A chrome extension to support the using of FeatureBee",
   "permissions": [
 	"tabs",

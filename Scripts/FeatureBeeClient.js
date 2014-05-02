@@ -71,6 +71,10 @@
             //value += "#" + overriddenToggles[a].Name;
         }
 
+        if (value == "") {
+            return;
+        }
+
         value += "#";
 
         var expires = "expires=" + d.toGMTString();
