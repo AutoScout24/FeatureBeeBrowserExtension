@@ -7,12 +7,12 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{6BE3C3B4-F5AE-4D95-A499-1DA71DCAF4E9}</ProjectGuid>
+    <ProjectGuid>{D9D3B133-A636-4A23-BD61-290D91D31892}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FeatureBeeBrowserExtension</RootNamespace>
-    <AssemblyName>FeatureBeeBrowserExtension</AssemblyName>
+    <RootNamespace>WebApplication1</RootNamespace>
+    <AssemblyName>WebApplication1</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -57,43 +57,19 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\bee.png" />
-    <Content Include="Images\bee_128.png" />
-    <Content Include="Images\bee_16.png" />
-    <Content Include="Images\bee_48.png" />
-    <Content Include="Images\logo.png" />
-    <Content Include="Scripts\Chrome\CommunicationService.js" />
-    <Content Include="Scripts\old\content_scripts.js" />
-    <Content Include="Scripts\old\FeatureBeeCentral.js" />
-    <Content Include="Scripts\old\FeatureBeeToggleBar.js" />
-    <Content Include="Scripts\old\FeatureBeeClient.js" />
-    <Content Include="Scripts\old\FeatureBeeTogglesExtensionStorage.js" />
-    <Content Include="Scripts\Presenter.js" />
-    <Content Include="Scripts\Repository.js" />
-    <Content Include="Scripts\start.js" />
-    <Content Include="Styles\old\options.css" />
-    <Content Include="Scripts\old\options.js" />
-    <Content Include="Styles\old\toggle_bar.css" />
-    <Content Include="Images\add.png" />
-    <Content Include="Images\add_hover.png" />
-    <Content Include="Images\feabee_header.png" />
-    <Content Include="Images\stop.png" />
-    <Content Include="popup.html" />
-    <Content Include="Scripts\old\FeatureBeeCommunicationEngine.js" />
-    <Content Include="Scripts\old\FeatureBeeToggleExtensionController.js" />
-    <Content Include="Scripts\old\util.js" />
-    <Content Include="Styles\old\featurebee_extension.css" />
-    <Content Include="Styles\old\on_off_button.css" />
-    <Content Include="Styles\styles.css" />
-    <Content Include="testPad.html" />
+    <Content Include="test.html" />
+    <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\feabee_header.psd" />
-    <Content Include="Images\add.psd" />
-    <Content Include="manifest.json" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -108,9 +84,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>62090</DevelopmentServerPort>
+          <DevelopmentServerPort>53871</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:62090/</IISUrl>
+          <IISUrl>http://localhost:53871/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
