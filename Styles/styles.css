@@ -32,12 +32,32 @@ featurebeeextension .content{
     box-shadow: 10px 10px 12px 3px rgba(0,0,0,0.75);
 }
 
-featurebeeextension .title{
+featurebeeextension .titleImage{
     margin: 5px;
+    float: left;
+}
+
+featurebeeextension .title{
+    height: 70px;
+}
+
+featurebeeextension .close{
+    float: right;
+    padding-right: 1.5rem;
+    padding-top: 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    width: 3rem;
+    height: 2rem;
+    text-align: right;
+}
+
+featurebeeextension .close:hover {
+    text-decoration: underline;
 }
 
 featurebeeextension .maincontentarea{
-    width: 60%;
+    width: 70%;
     display: inline-block;
     vertical-align: top;
 }
@@ -48,7 +68,7 @@ featurebeeextension .contentareaseparator{
 }
 
 featurebeeextension .sidecontentarea{
-    width: 35%;
+    width: 30%;
     display: inline-block;
     vertical-align: top;
 }
@@ -156,6 +176,16 @@ featurebeeextension .toggleState{
 featurebeeextension .toggleActionForget{
     display: inline-block;
     width: 10%
+}
+
+featurebeeextension .help {
+    width: 100%
+}
+
+featurebeeextension .feedbackBox {
+    display: block;
+    width: 94%;
+    margin: 0.5rem 2rem 1rem 2px;
 }
 
 /*

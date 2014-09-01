@@ -26,6 +26,7 @@
     "Styles/styles.css",
     "Scripts/Presenter.js",
 	"Scripts/Repository.js",
-	"Images/logo.png"
+	"Images/logo.png",
+	"Images/help.png"
   ]
 }

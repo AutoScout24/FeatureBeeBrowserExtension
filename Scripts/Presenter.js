@@ -5,10 +5,19 @@
         return chrome.extension.getURL(relPath);
     }
 
+    function closeMe() {
+        var me = document.querySelector('featurebeeextension');
+        if (me) {
+            me.parentNode.removeChild(me);
+            var css = document.querySelector("link[origin=featureBeeExtension]");
+            css.parentNode.removeChild(css);
+        } 
+    }
+
     var extension = document.createElement('FeatureBeeExtension');
     extension.innerHTML = '<div class="uiblocker"></div><div class="content"></div>';
     document.body.insertBefore(extension, document.body.firstChild)
-    document.body.innerHTML += '<link rel="stylesheet" type="text/css" href="' + $file('Styles/styles.css') + '">';
+    document.body.innerHTML += '<link rel="stylesheet" type="text/css" origin="featureBeeExtension" href="' + $file('Styles/styles.css') + '">';
 
     var repository = new FeatureBeeToggleRepository();
 
@@ -42,8 +51,16 @@
 
         title: {
             build: function () {
-                var obj = $div();
-                obj.appendChild($img('Images/logo.png', 'title'));
+                var obj = $div('title');
+                obj.appendChild($img('Images/logo.png', 'titleImage'));
+
+                var close = $div('close');
+                close.innerText = "x";
+                close.addEventListener('click', function () {
+                    closeMe();
+                });
+                obj.appendChild(close);
+
                 return obj;
             }
         },
@@ -63,7 +80,7 @@
             },
 
             buildOtherAvailableToggles: function () {
-                var box = $$box('Add an available toggle');
+                var box = $$box('Available toggles');
                 var boxContent = box.lastChild;
 
                 var toggles = repository.retrieveOtherAvailableToggles();
@@ -130,7 +147,7 @@
             build: function () {
                 var box = $$box('How does it work?')
                 var boxContent = box.lastChild;
-                boxContent.innerHTML = "hilfe"
+                boxContent.appendChild($img('Images/help.png', 'help'));
                 return box;
             }
         },
@@ -139,7 +156,23 @@
             build: function () {
                 var box = $$box('Do you like it? Or not?');
                 var boxContent = box.lastChild;
-                boxContent.innerHTML = "feed"
+                var textBox = document.createElement('textarea');
+                var send = $div('toggleButton toggleActionButton');
+                var title = $div();
+
+                title.innerText = "Questions? Suggestions?";
+                send.innerText = "SEND"
+                textBox.className = "feedbackBox";
+                textBox.rows = 6;
+
+                send.addEventListener('click', function () {
+                    window.location.href = "mailto:gthuller@autoscout24.com?subject=Feedback about FeatureBeeExtension&body=" + textBox.value;
+                    boxContent.innerText = "Thank you for your feedback!";
+                });
+
+                boxContent.appendChild(title);
+                boxContent.appendChild(textBox);
+                boxContent.appendChild(send);
                 return box;
             }
         },
