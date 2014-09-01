@@ -5,20 +5,6 @@
         return chrome.extension.getURL(relPath);
     }
 
-    function closeMe() {
-        var me = document.querySelector('featurebeeextension');
-        if (me) {
-            me.parentNode.removeChild(me);
-            var css = document.querySelector("link[origin=featureBeeExtension]");
-            css.parentNode.removeChild(css);
-        } 
-    }
-
-    var extension = document.createElement('FeatureBeeExtension');
-    extension.innerHTML = '<div class="uiblocker"></div><div class="content"></div>';
-    document.body.insertBefore(extension, document.body.firstChild)
-    document.body.innerHTML += '<link rel="stylesheet" type="text/css" origin="featureBeeExtension" href="' + $file('Styles/styles.css') + '">';
-
     var repository = new FeatureBeeToggleRepository();
 
     var $div = function (css) {
@@ -32,7 +18,13 @@
         img.src = $file(src);
         img.className = css;
         return img;
+    }
 
+    var $a = function(text, href){
+        var a = document.createElement('a');
+        a.href = href;
+        a.innerText = text;
+        return a;
     }
 
     var $$box = function (title) {
@@ -47,22 +39,58 @@
         return box;
     };
 
+    var $$text = function (text) {
+        var textBox = $div('text');
+        textBox.innerHTML = text;
+        return textBox;
+    };
+
     this.view = {
+
+        toggleViewState: function(){
+            var me = document.querySelector('featurebeeextension');
+            if (me) {
+                me.parentNode.removeChild(me);
+                var css = document.querySelector("link[origin=featureBeeExtension]");
+                css.parentNode.removeChild(css);
+            } else {
+                this.build();
+            }
+        },
 
         title: {
             build: function () {
                 var obj = $div('title');
                 obj.appendChild($img('Images/logo.png', 'titleImage'));
 
+                var message = $div('messageContainer');
+                this.displayMessage = function (messageComponents) {
+                    if (message.firstChild) {
+                        message.removeChild(message.firstChild);
+                    }
+
+                    var messageDiv = $div('message');
+
+                    for (var i = 0; i < messageComponents.length; i++) {
+                        messageDiv.appendChild(messageComponents[i]);
+                    }
+
+                    message.appendChild(messageDiv);
+                }
+
+                obj.appendChild(message);
+
                 var close = $div('close');
                 close.innerText = "x";
                 close.addEventListener('click', function () {
-                    closeMe();
+                    _this.view.toggleViewState();
                 });
                 obj.appendChild(close);
 
                 return obj;
-            }
+            },
+
+            displayMessage : function(){}
         },
 
         toggles: {
@@ -71,6 +99,11 @@
                 var boxContent = box.lastChild;
 
                 var toggles = repository.retrieveMyToggles();
+
+                if (!toggles || toggles.length == 0) {
+                    boxContent.appendChild($$text('There are no toggles in your list'));
+                    return box;
+                }
 
                 for (var i = 0; i < toggles.length; i++) {
                     boxContent.appendChild(this.createToggle(toggles[i], true));
@@ -82,8 +115,14 @@
             buildOtherAvailableToggles: function () {
                 var box = $$box('Available toggles');
                 var boxContent = box.lastChild;
-
                 var toggles = repository.retrieveOtherAvailableToggles();
+
+                if (!toggles || toggles.length == 0) {
+                    boxContent.appendChild($$text('There are no available toggles'));
+                    return box;
+                }
+
+                boxContent.appendChild(this.buildFilter(boxContent));
 
                 for (var i = 0; i < toggles.length; i++) {
                     boxContent.appendChild(this.createToggle(toggles[i], false));
@@ -92,8 +131,34 @@
                 return box;
             },
 
+            buildFilter: function (boxToFilter) {
+                var container = $div('filterContainer');
+                var input = document.createElement('input');
+
+                input.type = 'text';
+                input.placeholder = ' Enter your filter criteria';
+                input.className = 'inputFilter';
+                input.addEventListener('keyup', function () {
+                    var filterValue = input.value;
+                    for (var i = 0; i < boxToFilter.childNodes.length; i++) {
+                        var child = boxToFilter.childNodes[i];
+                        var childValue = child.getAttribute('data-filter');
+                        if (childValue && childValue != '') {
+                            var matches = childValue.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0;
+                            child.style.display = matches ? "block" : "none";
+                        }
+                    }
+                });
+
+                container.appendChild($$text("Filter:"));
+                container.appendChild(input);
+                return container;
+            },
+
             createToggle: function (toggle, isAddedToMyToggles) {
                 var div = $div('toggleContainer');
+
+                div.setAttribute('data-filter', toggle.Name);
 
                 if (isAddedToMyToggles) {
                     var button = $div('toggleButton');
@@ -102,6 +167,11 @@
                     button.addEventListener('click', function () {
                         repository.toggleToggleOnOff(toggle);
                         _this.view.refreshMainContentArea();
+                        _this.view.title.displayMessage([
+                            $$text('You changed your toggle configuration. Please&nbsp'),
+                            $a('reload', 'javascript:location.reload()'),
+                            $$text('&nbspyour page to make sure the changes will be displayed&nbsp')
+                        ]);
                     });
                     div.appendChild(button);
                 } else {
@@ -191,6 +261,12 @@
         },
 
         build: function () {
+
+            var extension = document.createElement('FeatureBeeExtension');
+            extension.innerHTML = '<div class="uiblocker"></div><div class="content"></div>';
+            document.body.insertBefore(extension, document.body.firstChild)
+            document.body.innerHTML += '<link rel="stylesheet" type="text/css" origin="featureBeeExtension" href="' + $file('Styles/styles.css') + '">';
+
             var contentcontainer = document.querySelector('featurebeeextension .content');
             var maincontentarea = this.mainContentArea();
             var contentareaseparator = $div('contentareaseparator');
@@ -208,4 +284,4 @@
 };
 
 var presenter = new Presenter();
-presenter.view.build();
+presenter.view.toggleViewState();

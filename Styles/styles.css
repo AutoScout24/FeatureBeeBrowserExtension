@@ -41,6 +41,23 @@ featurebeeextension .title{
     height: 70px;
 }
 
+featurebeeextension .messageContainer{
+    display: inline-block;
+    margin: auto;
+    position: absolute;
+    right: 5rem;
+    left: 11rem;
+}
+
+featurebeeextension .message {
+    margin: auto;
+    background-color: lightgoldenrodyellow;
+    margin-top: 0.5rem;
+}
+featurebeeextension .message a, featurebeeextension .message a:hover{
+    font-size: 1rem;
+}
+
 featurebeeextension .close{
     float: right;
     padding-right: 1.5rem;
@@ -50,6 +67,11 @@ featurebeeextension .close{
     width: 3rem;
     height: 2rem;
     text-align: right;
+    display: inline-block;
+    right: 0;
+    position: absolute;
+    vertical-align: top;
+    top: 0;
 }
 
 featurebeeextension .close:hover {
@@ -96,6 +118,10 @@ featurebeeextension .boxcontent{
 }
 featurebeeextension .toggleContainer {
     padding: 4px;
+    -moz-user-select: none; 
+    -khtml-user-select: none; 
+    -webkit-user-select: none; 
+    -o-user-select: none; 
 }
 
 featurebeeextension .toggleContainer:hover, featurebeeextension .toggleContainer:focus, featurebeeextension .toggleContainer:active {
@@ -186,6 +212,23 @@ featurebeeextension .feedbackBox {
     display: block;
     width: 94%;
     margin: 0.5rem 2rem 1rem 2px;
+}
+
+featurebeeextension .text {
+    display: inline-block;
+    font-size: 1rem;
+}
+
+featurebeeextension .inputFilter {
+    display: inline-block;
+    width: 50%;
+    vertical-align: baseline;
+    margin-left: 0.5rem;
+}
+
+featurebeeextension .filterContainer {
+    margin: 1rem;
+    text-align: right;
 }
 
 /*

@@ -26,10 +26,15 @@
         xhr.open("GET", "/featurebee.axd/features", false);
         xhr.onload = function (e) {
             if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    availableToggles = JSON.parse(xhr.responseText);
-                } else {
-                    console.error(xhr.statusText);
+                switch (xhr.status) {
+                    case 200:
+                        availableToggles = JSON.parse(xhr.responseText);
+                        break;
+                    case 404:
+                        availableToggles = [];
+                        break;
+                    default:
+                        console.error(xhr.statusText);
                 }
             }
         };
