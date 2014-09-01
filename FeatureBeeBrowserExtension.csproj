@@ -61,29 +61,15 @@
     <Content Include="Images\bee_128.png" />
     <Content Include="Images\bee_16.png" />
     <Content Include="Images\bee_48.png" />
+    <Content Include="Images\bee_tile_420x280.png" />
+    <Content Include="Images\help.png" />
     <Content Include="Images\logo.png" />
-    <Content Include="Scripts\Chrome\CommunicationService.js" />
-    <Content Include="Scripts\old\content_scripts.js" />
-    <Content Include="Scripts\old\FeatureBeeCentral.js" />
-    <Content Include="Scripts\old\FeatureBeeToggleBar.js" />
-    <Content Include="Scripts\old\FeatureBeeClient.js" />
-    <Content Include="Scripts\old\FeatureBeeTogglesExtensionStorage.js" />
+    <Content Include="Scripts\Chrome\injector.js" />
     <Content Include="Scripts\Presenter.js" />
     <Content Include="Scripts\Repository.js" />
     <Content Include="Scripts\start.js" />
-    <Content Include="Styles\old\options.css" />
-    <Content Include="Scripts\old\options.js" />
-    <Content Include="Styles\old\toggle_bar.css" />
-    <Content Include="Images\add.png" />
-    <Content Include="Images\add_hover.png" />
     <Content Include="Images\feabee_header.png" />
-    <Content Include="Images\stop.png" />
     <Content Include="popup.html" />
-    <Content Include="Scripts\old\FeatureBeeCommunicationEngine.js" />
-    <Content Include="Scripts\old\FeatureBeeToggleExtensionController.js" />
-    <Content Include="Scripts\old\util.js" />
-    <Content Include="Styles\old\featurebee_extension.css" />
-    <Content Include="Styles\old\on_off_button.css" />
     <Content Include="Styles\styles.css" />
     <Content Include="testPad.html" />
   </ItemGroup>
@@ -94,6 +80,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="help.pptx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\bee_wo_background.psd" />
+    <Content Include="Images\bee_wo_background_horinzontal.psd" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

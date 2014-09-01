@@ -2,7 +2,7 @@
 
     var _this = this;
     var $file = function (relPath) {
-        return chrome.extension.getURL(relPath);
+        return 'resource://FeatureBeeExtension/' + relPath;
     }
 
     var repository = new FeatureBeeToggleRepository();
@@ -23,7 +23,7 @@
     var $a = function(text, href){
         var a = document.createElement('a');
         a.href = href;
-        a.innerText = text;
+        a.textContent = text;
         return a;
     }
 
@@ -32,7 +32,7 @@
         var boxtitle = $div('boxtitle');
         var boxcontent = $div('boxcontent');
 
-        boxtitle.innerText = title;
+        boxtitle.textContent = title;
 
         box.appendChild(boxtitle);
         box.appendChild(boxcontent);
@@ -75,7 +75,7 @@
                 obj.appendChild(message);
 
                 var close = $div('close');
-                close.innerText = "x";
+                close.textContent = "x";
                 close.addEventListener('click', function () {
                     _this.view.toggleViewState();
                 });
@@ -158,7 +158,7 @@
                 if (isAddedToMyToggles) {
                     var button = $div('toggleButton');
                     button.setAttribute('data-enabled', toggle.Enabled);
-                    button.innerText = toggle.Enabled == "true" ? 'ON' : 'OFF';
+                    button.textContent = toggle.Enabled == "true" ? 'ON' : 'OFF';
 
                     var onChangeMessage = $div('message');
                     onChangeMessage.innerHTML = 'You changed your toggle configuration. Please&nbsp' +
@@ -172,16 +172,16 @@
                     div.appendChild(button);
                 } else {
                     var button = $div('toggleButton toggleButtonInactive');
-                    button.innerText = toggle.Enabled ? 'ON' : 'OFF';
+                    button.textContent = toggle.Enabled ? 'ON' : 'OFF';
                     div.appendChild(button);
                 }
 
                 var name = $div('toggleName');
-                name.innerText = toggle.Name;
+                name.textContent = toggle.Name;
                 div.appendChild(name);
 
                 var state = $div('toggleState');
-                state.innerText = toggle.State;
+                state.textContent = toggle.State;
                 state.setAttribute('data-hide-on-low-resolution', true);
                 div.appendChild(state);
 
@@ -189,7 +189,7 @@
                 if (isAddedToMyToggles) {
                     var actionForget = $div('toggleButton toggleActionButton');
                     actionForget.setAttribute('data-name', toggle.Name);
-                    actionForget.innerText = "FORGET"
+                    actionForget.textContent = "FORGET"
                     actionForget.addEventListener('click', function () {
                         repository.forgetToggle(toggle);
                         _this.view.refreshMainContentArea();
@@ -198,7 +198,7 @@
                 } else {
                     var actionAdd = $div('toggleButton toggleActionButton');
                     actionAdd.setAttribute('data-name', toggle.Name);
-                    actionAdd.innerText = "ADD"
+                    actionAdd.textContent = "ADD"
                     actionAdd.addEventListener('click', function () {
                         repository.addToggle(toggle);
                         _this.view.refreshMainContentArea();
@@ -227,14 +227,14 @@
                 var send = $div('toggleButton toggleActionButton');
                 var title = $div();
 
-                title.innerText = "Questions? Suggestions?";
-                send.innerText = "SEND"
+                title.textContent = "Questions? Suggestions?";
+                send.textContent = "SEND"
                 textBox.className = "feedbackBox";
                 textBox.rows = 6;
 
                 send.addEventListener('click', function () {
                     window.location.href = "mailto:gthuller@autoscout24.com?subject=Feedback about FeatureBeeExtension&body=" + textBox.value;
-                    boxContent.innerText = "Thank you for your feedback!";
+                    boxContent.textContent = "Thank you for your feedback!";
                 });
 
                 boxContent.appendChild(title);
@@ -262,7 +262,7 @@
             var extension = document.createElement('FeatureBeeExtension');
             extension.innerHTML = '<div class="uiblocker"></div><div class="content"></div>';
             document.body.insertBefore(extension, document.body.firstChild)
-            document.body.innerHTML += '<link rel="stylesheet" type="text/css" origin="featureBeeExtension" href="' + $file('Styles/styles.css') + '">';
+            document.body.innerHTML += '<link rel="stylesheet" type="text/css" origin="featureBeeExtension" href="resource://FeatureBeeExtension/content/styles.css">';
 
             var contentcontainer = document.querySelector('featurebeeextension .content');
             var maincontentarea = this.mainContentArea();

@@ -11,10 +11,12 @@
 	"storage",
 	"webRequest"
   ],
+  "background": {
+    "scripts": ["Scripts/Chrome/injector.js"]
+  },
   "browser_action": {
       "default_title": "FeatureBee Chrome Extension",
-      "default_icon": "Images/bee.png",
-      "default_popup": "popup.html"
+      "default_icon": "Images/bee.png"
   },
   "icons": { "16": "Images/bee_16.png",
              "48": "Images/bee_48.png",
