@@ -64,17 +64,11 @@
                 obj.appendChild($img('Images/logo.png', 'titleImage'));
 
                 var message = $div('messageContainer');
-                this.displayMessage = function (messageComponents) {
+                this.displayMessage = function (messageDiv) {
                     if (message.firstChild) {
                         message.removeChild(message.firstChild);
                     }
-
-                    var messageDiv = $div('message');
-
-                    for (var i = 0; i < messageComponents.length; i++) {
-                        messageDiv.appendChild(messageComponents[i]);
-                    }
-
+                    
                     message.appendChild(messageDiv);
                 }
 
@@ -85,6 +79,7 @@
                 close.addEventListener('click', function () {
                     _this.view.toggleViewState();
                 });
+
                 obj.appendChild(close);
 
                 return obj;
@@ -164,14 +159,15 @@
                     var button = $div('toggleButton');
                     button.setAttribute('data-enabled', toggle.Enabled);
                     button.innerText = toggle.Enabled == "true" ? 'ON' : 'OFF';
+
+                    var onChangeMessage = $div('message');
+                    onChangeMessage.innerHTML = 'You changed your toggle configuration. Please&nbsp' +
+                                                 $a('reload', 'javascript:location.reload()').outerHTML +
+                                                '&nbspyour page to make sure the changes will be displayed&nbsp.'
                     button.addEventListener('click', function () {
                         repository.toggleToggleOnOff(toggle);
                         _this.view.refreshMainContentArea();
-                        _this.view.title.displayMessage([
-                            $$text('You changed your toggle configuration. Please&nbsp'),
-                            $a('reload', 'javascript:location.reload()'),
-                            $$text('&nbspyour page to make sure the changes will be displayed&nbsp')
-                        ]);
+                        _this.view.title.displayMessage(onChangeMessage);
                     });
                     div.appendChild(button);
                 } else {
@@ -186,6 +182,7 @@
 
                 var state = $div('toggleState');
                 state.innerText = toggle.State;
+                state.setAttribute('data-hide-on-low-resolution', true);
                 div.appendChild(state);
 
                 var action;                
