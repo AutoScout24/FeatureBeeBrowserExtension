@@ -1,6 +1,6 @@
 {
-  "name": "Feature Bee Plus",
-  "version": "0.6",
+  "name": "Feature Bee Extension",
+  "version": "0.6.1",
   "description": "A chrome extension to support the using of FeatureBee",
   "permissions": [
 	"tabs",
@@ -12,23 +12,23 @@
 	"webRequest"
   ],
   "background": {
-    "scripts": ["Scripts/Chrome/injector.js"]
+    "scripts": ["chrome/injector.js"]
   },
   "browser_action": {
       "default_title": "FeatureBee Chrome Extension",
-      "default_icon": "Images/bee.png"
+      "default_icon": "data/img/bee.png"
   },
-  "icons": { "16": "Images/bee_16.png",
-             "48": "Images/bee_48.png",
-             "128": "Images/bee_128.png" 
+  "icons": { "16": "data/img/bee_16.png",
+             "48": "data/img/bee_48.png",
+             "128": "data/img/bee_128.png" 
   },
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' https://ajax.googleapis.com 'unsafe-eval'; object-src 'self'",
   "web_accessible_resources": [    
-    "Styles/styles.css",
-    "Scripts/Presenter.js",
-	"Scripts/Repository.js",
-	"Images/logo.png",
-	"Images/help.png"
+    "data/css/styles.css",
+    "data/js/Presenter.js",
+	"data/js/Repository.js",
+	"data/img/logo.png",
+	"data/img/help.png"
   ]
 }
