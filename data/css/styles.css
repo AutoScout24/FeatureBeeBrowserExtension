@@ -9,7 +9,7 @@
     filter: alpha(opacity=70);
     width: 100%;
     height: 100%;
-    z-index: 1000;
+    z-index: 2147483647; /* int.max -1 */
 }
 
 featurebeeextension .content{
@@ -24,7 +24,7 @@ featurebeeextension .content{
     width: 80%;
     min-width: 380px;
     height: 80%;
-    z-index: 1001;
+    z-index: 2147483647; /* int.max */
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
@@ -149,6 +149,14 @@ featurebeeextension .toggleButton{
 featurebeeextension .toggleButtonInactive{
     width: 5%;
     cursor: default;
+}
+
+featurebeeextension .toggleButtonInactive[data-inactive-enabled=true] {
+    background-color: #99cc66;
+}
+
+featurebeeextension .toggleButtonInactive[data-inactive-enabled=false] {
+    background-color: #d3d5d2;
 }
 
 featurebeeextension .toggleButton:hover, featurebeeextension .toggleButton:focus, featurebeeextension .toggleButton:active {

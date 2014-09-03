@@ -179,6 +179,7 @@
                     div.appendChild(button);
                 } else {
                     var button = $div('toggleButton toggleButtonInactive');
+                    button.setAttribute('data-inactive-enabled', toggle.Enabled);
                     button.textContent = toggle.Enabled ? 'ON' : 'OFF';
                     div.appendChild(button);
                 }

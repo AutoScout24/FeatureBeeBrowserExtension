@@ -18,7 +18,12 @@
         var exdays = 30;
         d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
         var expires = "expires=" + d.toUTCString();
-        document.cookie = cname + "=" + cvalue + "; " + ";path=/";
+        var domainSplit = window.location.hostname.split('.');
+        var domain = domainSplit.length > 0
+                        ? window.location.hostname.replace(domainSplit[0] + ".", ";domain=")
+                        : '';
+        
+        document.cookie = cname + "=" + cvalue + "; " +expires + ";path=/" + domain;
     }
 
     function retrieveFeatureBeeTogglesFromServer() {
