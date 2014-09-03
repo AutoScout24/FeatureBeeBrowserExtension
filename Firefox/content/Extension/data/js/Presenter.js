@@ -2,6 +2,10 @@
 
     var _this = this;
     var $file = function (relPath) {
+        if (chrome) {
+            return chrome.extension.getURL(relPath);
+        }
+
         return document.querySelector("script[src*=Presenter]").src.replace("Presenter.js", "") +relPath;
     }
 
@@ -61,7 +65,7 @@
         title: {
             build: function () {
                 var obj = $div('title');
-                obj.appendChild($img('logo.png', 'titleImage'));
+                obj.appendChild($img('data/img/logo.png', 'titleImage'));
 
                 var message = $div('messageContainer');
                 this.displayMessage = function (messageDiv) {
@@ -214,7 +218,7 @@
             build: function () {
                 var box = $$box('How does it work?')
                 var boxContent = box.lastChild;
-                boxContent.appendChild($img('help.png', 'help'));
+                boxContent.appendChild($img('data/img/help.png', 'help'));
                 return box;
             }
         },
@@ -262,7 +266,7 @@
             var extension = document.createElement('FeatureBeeExtension');
             extension.innerHTML = '<div class="uiblocker"></div><div class="content"></div>';
             document.body.insertBefore(extension, document.body.firstChild)
-            document.body.innerHTML += '<link rel="stylesheet" type="text/css" origin="featureBeeExtension" href="' + $file('styles.css') + '">';
+            document.body.innerHTML += '<link rel="stylesheet" type="text/css" origin="featureBeeExtension" href="' + $file('data/css/styles.css') + '">';
 
             var contentcontainer = document.querySelector('featurebeeextension .content');
             var maincontentarea = this.mainContentArea();
