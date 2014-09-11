@@ -198,10 +198,10 @@
 
                 var name = $div('toggleName');
                 name.textContent = toggle.Name;
-                //name.addEventListener('contextmenu', function (e) {
-                //    _this.view.toggles.displayToggleContextMenu(e.pageX, e.pageY);
-                //    e.preventDefault();
-                //}, false);
+                name.addEventListener('contextmenu', function (e) {
+                    _this.view.toggles.displayToggleContextMenu(toggle, e.pageX, e.pageY);
+                    e.preventDefault();
+                }, false);
 
                 div.appendChild(name);
 
@@ -234,9 +234,10 @@
                 return div;
             },
 
-            displayToggleContextMenu: function (left, top) {
+            displayToggleContextMenu: function (toggle, left, top) {
                 var actionContainer = $div("toggleActionContainer");
                 var copyTextAction = $div("toggleActionItem");
+                var copyCodeAction = $div("toggleActionItem");
                 var featureBeeContainer = document.querySelector('featurebeeextension');
 
                 var close = function () {
@@ -246,9 +247,21 @@
                 actionContainer.style.left = (left - 20) + "px";
                 actionContainer.style.top = (top - 20) + "px";
 
-                $$writeText(copyTextAction, 'Copy toggle name to clipboard');
+                $$writeText(copyTextAction, 'Copy toggle name');
                 copyTextAction.addEventListener('click', function (e) {
+                    chrome.runtime.sendMessage({
+                        action: 'copy',
+                        value: toggle.Name
+                    });
+                    close();
+                });
 
+                $$writeText(copyCodeAction, 'Copy toggle C# code');
+                copyCodeAction.addEventListener('click', function (e) {
+                    chrome.runtime.sendMessage({
+                        action: 'copy',
+                        value: "if (Feature.IsEnabled(\"" + toggle.Name + "\")) {}"
+                    });
                     close();
                 });
 
@@ -261,6 +274,7 @@
                 }, false);
 
                 actionContainer.appendChild(copyTextAction);
+                actionContainer.appendChild(copyCodeAction);
                 featureBeeContainer.appendChild(actionContainer);
             }
         },

@@ -9,7 +9,8 @@
 	"http://*/*", 
 	"https://*/*", 
 	"storage",
-	"webRequest"
+	"webRequest",
+	"clipboardWrite" 
   ],
   "background": {
     "scripts": ["chrome/injector.js"]
