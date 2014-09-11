@@ -26,9 +26,9 @@
         document.cookie = cname + "=" + cvalue + "; " +expires + ";path=/" + domain;
     }
 
-    function retrieveFeatureBeeTogglesFromServer() {
+    function retrieveFeatureBeeTogglesFromServer(callback) {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/featurebee.axd/features", false);
+        xhr.open("GET", "/featurebee.axd/features", true);
         xhr.onload = function (e) {
             if (xhr.readyState === 4) {
                 switch (xhr.status) {
@@ -41,6 +41,10 @@
                     default:
                         console.error(xhr.statusText);
                 }
+
+                if (callback) {
+                    callback();
+                }
             }
         };
         xhr.onerror = function (e) {
@@ -48,9 +52,10 @@
         };
         xhr.send(null);
     }
-
-    // init
-    retrieveFeatureBeeTogglesFromServer();
+    
+    this.init = function (callbackAfterInit) {
+        retrieveFeatureBeeTogglesFromServer(callbackAfterInit);
+    }
 
     this.readSavedToggles = function () {
         var savedToggles = getCookie("featureBee");

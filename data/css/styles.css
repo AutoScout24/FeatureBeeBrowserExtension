@@ -9,7 +9,7 @@
     filter: alpha(opacity=70);
     width: 100%;
     height: 100%;
-    z-index: 2147483647; /* int.max -1 */
+    z-index: 2147483645; /* int.max -2 */
 }
 
 featurebeeextension .content{
@@ -24,7 +24,7 @@ featurebeeextension .content{
     width: 80%;
     min-width: 380px;
     height: 80%;
-    z-index: 2147483647; /* int.max */
+    z-index: 2147483647; /* int.max -1 */
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
@@ -241,6 +241,37 @@ featurebeeextension .inputFilter {
 featurebeeextension .filterContainer {
     margin: 1rem;
     text-align: right;
+}
+
+ featurebeeextension .toggleActionContainer{
+    position:fixed;
+    background: white;
+    left: 0;
+    top: 0;
+    z-index: 2147483647; /* int.max */
+    min-width: 200px;
+    min-height: 40px;
+    padding: 10px 0;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #424242;
+    -webkit-box-shadow: 6px 7px 14px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 6px 7px 14px 0px rgba(0,0,0,0.75);
+    box-shadow: 6px 7px 14px 0px rgba(0,0,0,0.75);
+}
+
+ featurebeeextension .toggleActionItem{
+    white-space: nowrap;
+    padding: 10px;
+    margin: 0 10px;
+    font-size: 0.9rem;
+}
+
+featurebeeextension .toggleActionItem:hover{
+    background-color: darkblue;
+    color: white;
+    cursor: pointer;
 }
 
 @media (max-width: 1250px) { 

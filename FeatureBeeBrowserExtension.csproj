@@ -57,36 +57,27 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\bee.png" />
-    <Content Include="Images\bee_128.png" />
-    <Content Include="Images\bee_16.png" />
-    <Content Include="Images\bee_48.png" />
-    <Content Include="Images\bee_tile_420x280.png" />
-    <Content Include="Images\help.png" />
-    <Content Include="Images\logo.png" />
-    <Content Include="Scripts\Chrome\injector.js" />
-    <Content Include="Scripts\Presenter.js" />
-    <Content Include="Scripts\Repository.js" />
-    <Content Include="Scripts\start.js" />
-    <Content Include="Images\feabee_header.png" />
-    <Content Include="popup.html" />
-    <Content Include="Styles\styles.css" />
-    <Content Include="testPad.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Images\feabee_header.psd" />
-    <Content Include="Images\add.psd" />
+    <Content Include="chrome\injector.js" />
+    <Content Include="data\css\styles.css" />
+    <Content Include="data\img\bee.png" />
+    <Content Include="data\img\bee_128.png" />
+    <Content Include="data\img\bee_16.png" />
+    <Content Include="data\img\bee_48.png" />
+    <Content Include="data\img\help.png" />
+    <Content Include="data\img\logo.png" />
+    <Content Include="data\js\Presenter.js" />
+    <Content Include="data\js\Repository.js" />
+    <Content Include="lib\main.js" />
     <Content Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="help.pptx" />
+    <Content Include="doc\help.pptx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\bee_wo_background.psd" />
-    <Content Include="Images\bee_wo_background_horinzontal.psd" />
+    <Content Include="package.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

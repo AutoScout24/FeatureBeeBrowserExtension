@@ -1,9 +1,9 @@
 {
-  "name": "featurebeeaddonforfirefox",
-  "title": "Feature Bee Firefox Addon",
+  "name": "featurebeeaddon",
+  "title": "Feature Bee Addon",
   "id": "jid1-TNzUfgEf7u9rED",
   "description": "An add on to help managing feature bee toggles.",
   "author": "Gleidson Thuller",
   "license": "MPL 2.0",
-  "version": "0.2"
+  "version": "0.3"
 }

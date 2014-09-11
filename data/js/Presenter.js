@@ -13,7 +13,7 @@
     }
 
     var repository = new FeatureBeeToggleRepository();
-
+    
     var $div = function (css) {
         var div = document.createElement("div");
         div.className = css || "";
@@ -46,11 +46,22 @@
         return box;
     };
 
+    var $$writeText = function (node, text) {
+        var textNode = document.createTextNode(text);
+        node.appendChild(textNode);
+    };
+
     var $$text = function (text) {
         var textBox = $div('text');
-        textBox.innerHTML = text;
+        textBox.textContent = text;
         return textBox;
     };
+
+    this.init = function () {
+        repository.init(function afterInit() {
+            _this.view.toggleViewState();
+        });
+    }
 
     this.view = {
 
@@ -168,9 +179,10 @@
                     button.textContent = toggle.Enabled == "true" ? 'ON' : 'OFF';
 
                     var onChangeMessage = $div('message');
-                    onChangeMessage.innerHTML = 'You changed your toggle configuration. Please&nbsp' +
-                                                 $a('reload', 'javascript:location.reload()').outerHTML +
-                                                '&nbspyour page to make sure the changes will be displayed&nbsp.'
+                    $$writeText(onChangeMessage,'You changed your toggle configuration. Please ')
+                    onChangeMessage.appendChild($a('reload', 'javascript:location.reload()'));
+                    $$writeText(onChangeMessage, ' your page to make sure the changes will be displayed.')
+
                     button.addEventListener('click', function () {
                         repository.toggleToggleOnOff(toggle);
                         _this.view.refreshMainContentArea();
@@ -186,6 +198,11 @@
 
                 var name = $div('toggleName');
                 name.textContent = toggle.Name;
+                //name.addEventListener('contextmenu', function (e) {
+                //    _this.view.toggles.displayToggleContextMenu(e.pageX, e.pageY);
+                //    e.preventDefault();
+                //}, false);
+
                 div.appendChild(name);
 
                 var state = $div('toggleState');
@@ -215,6 +232,36 @@
                 }
                 
                 return div;
+            },
+
+            displayToggleContextMenu: function (left, top) {
+                var actionContainer = $div("toggleActionContainer");
+                var copyTextAction = $div("toggleActionItem");
+                var featureBeeContainer = document.querySelector('featurebeeextension');
+
+                var close = function () {
+                    featureBeeContainer.removeChild(actionContainer);
+                }
+
+                actionContainer.style.left = (left - 20) + "px";
+                actionContainer.style.top = (top - 20) + "px";
+
+                $$writeText(copyTextAction, 'Copy toggle name to clipboard');
+                copyTextAction.addEventListener('click', function (e) {
+
+                    close();
+                });
+
+                actionContainer.addEventListener('mouseleave', function (e) {
+                    close();
+                });
+
+                actionContainer.addEventListener('contextmenu', function (e) {
+                    e.preventDefault();
+                }, false);
+
+                actionContainer.appendChild(copyTextAction);
+                featureBeeContainer.appendChild(actionContainer);
             }
         },
 
@@ -267,10 +314,17 @@
 
         build: function () {
 
+            var cssLink = document.createElement('link');
+            cssLink.rel = "stylesheet";
+            cssLink.type = "text/css";
+            cssLink.setAttribute('origin', "featureBeeExtension");
+            cssLink.href = $file('css/styles.css');
+            document.getElementsByTagName('head')[0].appendChild(cssLink);
+
             var extension = document.createElement('FeatureBeeExtension');
-            extension.innerHTML = '<div class="uiblocker"></div><div class="content"></div>';
+            extension.appendChild($div("uiblocker"));
+            extension.appendChild($div("content"));
             document.body.insertBefore(extension, document.body.firstChild)
-            document.body.innerHTML += '<link rel="stylesheet" type="text/css" origin="featureBeeExtension" href="' + $file('css/styles.css') + '">';
 
             var contentcontainer = document.querySelector('featurebeeextension .content');
             var maincontentarea = this.mainContentArea();
@@ -291,4 +345,4 @@
 };
 
 var presenter = new Presenter();
-presenter.view.toggleViewState();
+presenter.init();
