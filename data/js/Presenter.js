@@ -2,37 +2,31 @@
 
     var _this = this;
     var $file = function (relPath) {
-
         relPath = "data/" + relPath;
-
-        try {
-            return chrome.extension.getURL(relPath);
-        } catch (e) { }
-        
-        return document.querySelector("script[src*=Presenter]").src.replace("data/js/", "").replace("Presenter.js", "") +relPath;
-    }
+        return FeatureBeeClientInterface.getExtensionPath(relPath);
+    };
 
     var repository = new FeatureBeeToggleRepository();
-    
-    var $div = function (css) {
+
+    var $div = function(css) {
         var div = document.createElement("div");
         div.className = css || "";
         return div;
-    }
+    };
 
-    var $img = function (src, css) {
+    var $img = function(src, css) {
         var img = document.createElement("img");
         img.src = $file(src);
         img.className = css;
         return img;
-    }
+    };
 
-    var $a = function(text, href){
+    var $a = function(text, href) {
         var a = document.createElement('a');
         a.href = href;
         a.textContent = text;
         return a;
-    }
+    };
 
     var $$box = function (title) {
         var box = $div('box');
@@ -57,11 +51,13 @@
         return textBox;
     };
 
-    this.init = function () {
+    this.init = function() {
+// ReSharper disable UnusedLocals
         repository.init(function afterInit() {
+// ReSharper restore UnusedLocals
             _this.view.toggleViewState();
         });
-    }
+    };
 
     this.view = {
 
@@ -82,13 +78,13 @@
                 obj.appendChild($img('img/logo.png', 'titleImage'));
 
                 var message = $div('messageContainer');
-                this.displayMessage = function (messageDiv) {
+                this.displayMessage = function(messageDiv) {
                     if (message.firstChild) {
                         message.removeChild(message.firstChild);
                     }
-                    
+
                     message.appendChild(messageDiv);
-                }
+                };
 
                 obj.appendChild(message);
 
@@ -173,15 +169,16 @@
 
                 div.setAttribute('data-filter', toggle.Name);
 
+                var button;
                 if (isAddedToMyToggles) {
-                    var button = $div('toggleButton');
+                    button = $div('toggleButton');
                     button.setAttribute('data-enabled', toggle.Enabled);
                     button.textContent = toggle.Enabled == "true" ? 'ON' : 'OFF';
 
                     var onChangeMessage = $div('message');
-                    $$writeText(onChangeMessage,'You changed your toggle configuration. Please ')
+                    $$writeText(onChangeMessage, 'You changed your toggle configuration. Please ');
                     onChangeMessage.appendChild($a('reload', 'javascript:location.reload()'));
-                    $$writeText(onChangeMessage, ' your page to make sure the changes will be displayed.')
+                    $$writeText(onChangeMessage, ' your page to make sure the changes will be displayed.');
 
                     button.addEventListener('click', function () {
                         repository.toggleToggleOnOff(toggle);
@@ -190,7 +187,7 @@
                     });
                     div.appendChild(button);
                 } else {
-                    var button = $div('toggleButton toggleButtonInactive');
+                    button = $div('toggleButton toggleButtonInactive');
                     button.setAttribute('data-inactive-enabled', toggle.Enabled);
                     button.textContent = toggle.Enabled ? 'ON' : 'OFF';
                     div.appendChild(button);
@@ -210,11 +207,10 @@
                 state.setAttribute('data-hide-on-low-resolution', true);
                 div.appendChild(state);
 
-                var action;                
                 if (isAddedToMyToggles) {
                     var actionForget = $div('toggleButton toggleActionButton');
                     actionForget.setAttribute('data-name', toggle.Name);
-                    actionForget.textContent = "FORGET"
+                    actionForget.textContent = "FORGET";
                     actionForget.addEventListener('click', function () {
                         repository.forgetToggle(toggle);
                         _this.view.refreshMainContentArea();
@@ -223,12 +219,12 @@
                 } else {
                     var actionAdd = $div('toggleButton toggleActionButton');
                     actionAdd.setAttribute('data-name', toggle.Name);
-                    actionAdd.textContent = "ADD"
+                    actionAdd.textContent = "ADD";
                     actionAdd.addEventListener('click', function () {
                         repository.addToggle(toggle);
                         _this.view.refreshMainContentArea();
                     });
-                    div.appendChild(actionAdd);                    
+                    div.appendChild(actionAdd);
                 }
                 
                 return div;
@@ -240,32 +236,26 @@
                 var copyCodeAction = $div("toggleActionItem");
                 var featureBeeContainer = document.querySelector('featurebeeextension');
 
-                var close = function () {
+                var close = function() {
                     featureBeeContainer.removeChild(actionContainer);
-                }
+                };
 
                 actionContainer.style.left = (left - 20) + "px";
                 actionContainer.style.top = (top - 20) + "px";
 
                 $$writeText(copyTextAction, 'Copy toggle name');
-                copyTextAction.addEventListener('click', function (e) {
-                    chrome.runtime.sendMessage({
-                        action: 'copy',
-                        value: toggle.Name
-                    });
+                copyTextAction.addEventListener('click', function () {
+                    FeatureBeeClientInterface.sendCommand('copy', toggle.Name);
                     close();
                 });
 
                 $$writeText(copyCodeAction, 'Copy toggle C# code');
-                copyCodeAction.addEventListener('click', function (e) {
-                    chrome.runtime.sendMessage({
-                        action: 'copy',
-                        value: "if (Feature.IsEnabled(\"" + toggle.Name + "\")) {}"
-                    });
+                copyCodeAction.addEventListener('click', function () {
+                    FeatureBeeClientInterface.sendCommand('copy', "if (Feature.IsEnabled(\"" + toggle.Name + "\")) {}");
                     close();
                 });
 
-                actionContainer.addEventListener('mouseleave', function (e) {
+                actionContainer.addEventListener('mouseleave', function () {
                     close();
                 });
 
@@ -281,7 +271,7 @@
 
         help: {
             build: function () {
-                var box = $$box('How does it work?')
+                var box = $$box('How does it work?');
                 var boxContent = box.lastChild;
                 boxContent.appendChild($img('img/help.png', 'help'));
                 return box;
@@ -297,7 +287,7 @@
                 var title = $div();
 
                 title.textContent = "Questions? Suggestions?";
-                send.textContent = "SEND"
+                send.textContent = "SEND";
                 textBox.className = "feedbackBox";
                 textBox.rows = 6;
 
@@ -338,11 +328,10 @@
             var extension = document.createElement('FeatureBeeExtension');
             extension.appendChild($div("uiblocker"));
             extension.appendChild($div("content"));
-            document.body.insertBefore(extension, document.body.firstChild)
+            document.body.insertBefore(extension, document.body.firstChild);
 
             var contentcontainer = document.querySelector('featurebeeextension .content');
             var maincontentarea = this.mainContentArea();
-            var contentareaseparator = $div('contentareaseparator');
             var sidecontentarea = $div('sidecontentarea');
 
             contentcontainer.appendChild(this.title.build());

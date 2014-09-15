@@ -1,5 +1,9 @@
 ﻿chrome.browserAction.onClicked.addListener(function (tab) {
     chrome.tabs.executeScript({
+        file: 'data/js/chrome/FeatureBeeClientInterface.js'
+    });
+
+    chrome.tabs.executeScript({
         file: 'data/js/Repository.js'
     });
 
@@ -10,7 +14,6 @@
 
 chrome.runtime.onMessage.addListener(
   function (request, sender, sendResponse) {
-      debugger;
       switch (request.action) {
           case 'copy':
                   var copyinput = document.createElement('input');

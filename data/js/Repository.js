@@ -29,7 +29,7 @@
     function retrieveFeatureBeeTogglesFromServer(callback) {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "/featurebee.axd/features", true);
-        xhr.onload = function (e) {
+        xhr.onload = function () {
             if (xhr.readyState === 4) {
                 switch (xhr.status) {
                     case 200:
@@ -39,7 +39,7 @@
                         availableToggles = [];
                         break;
                     default:
-                        console.error(xhr.statusText);
+                        availableToggles = [];
                 }
 
                 if (callback) {
@@ -47,22 +47,22 @@
                 }
             }
         };
-        xhr.onerror = function (e) {
-            console.error(xhr.statusText);
+        xhr.onerror = function () {
+            availableToggles = [];
         };
         xhr.send(null);
     }
-    
-    this.init = function (callbackAfterInit) {
-        retrieveFeatureBeeTogglesFromServer(callbackAfterInit);
-    }
 
-    this.readSavedToggles = function () {
+    this.init = function(callbackAfterInit) {
+        retrieveFeatureBeeTogglesFromServer(callbackAfterInit);
+    };
+
+    this.readSavedToggles = function() {
         var savedToggles = getCookie("featureBee");
         savedToggles = unescape(savedToggles);
         savedToggles = savedToggles.split('#');
         var parsedToggles = [];
-        
+
         for (var i = 0; i < savedToggles.length; i++) {
             var parsedToggle = savedToggles[i].split("=");
 
@@ -77,9 +77,9 @@
         }
 
         return parsedToggles;
-    }
+    };
 
-    this.retrieveMyToggles = function () {
+    this.retrieveMyToggles = function() {
         var savedToggles = this.readSavedToggles();
         var mytoggles = [];
 
@@ -96,9 +96,9 @@
             }
         }
         return mytoggles;
-    }
+    };
 
-    this.retrieveOtherAvailableToggles = function () {
+    this.retrieveOtherAvailableToggles = function() {
         var savedToggles = this.readSavedToggles();
         var othertoggles = [];
 
@@ -120,22 +120,22 @@
         }
 
         return othertoggles;
-    }
+    };
 
-    this.save = function (toggles) {
+    this.save = function(toggles) {
         var stringfiedToggle = "";
 
         for (var i = 0; i < toggles.length; i++) {
             var toggle = toggles[i];
-            stringfiedToggle += "#" + toggle.name + "=" + toggle.enabled
+            stringfiedToggle += "#" + toggle.name + "=" + toggle.enabled;
         }
 
-        stringfiedToggle = escape(stringfiedToggle + "#")
+        stringfiedToggle = escape(stringfiedToggle + "#");
 
         setCookie('featureBee', stringfiedToggle);
-    }
+    };
 
-    this.forgetToggle = function (toggle) {
+    this.forgetToggle = function(toggle) {
         var savedToggles = this.readSavedToggles();
 
         for (var i = 0; i < savedToggles.length; i++) {
@@ -148,18 +148,18 @@
         }
 
         this.save(savedToggles);
-    }
+    };
 
-    this.addToggle = function(toggle){
+    this.addToggle = function(toggle) {
         var savedToggles = this.readSavedToggles();
         savedToggles.push({
             name: toggle.Name,
             enabled: toggle.Enabled
         });
         this.save(savedToggles);
-    }
+    };
 
-    this.toggleToggleOnOff = function (toggle) {
+    this.toggleToggleOnOff = function(toggle) {
         var savedToggles = this.readSavedToggles();
         for (var i = 0; i < savedToggles.length; i++) {
             var savedToggle = savedToggles[i];
@@ -172,5 +172,5 @@
         }
 
         this.save(savedToggles);
-    }
+    };
 };

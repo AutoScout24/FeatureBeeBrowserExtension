@@ -1,6 +1,6 @@
 {
   "name": "Feature Bee Extension",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "A chrome extension to support the using of FeatureBee",
   "permissions": [
 	"tabs",
@@ -25,10 +25,11 @@
   },
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' https://ajax.googleapis.com 'unsafe-eval'; object-src 'self'",
-  "web_accessible_resources": [    
+  "web_accessible_resources": [
     "data/css/styles.css",
     "data/js/Presenter.js",
 	"data/js/Repository.js",
+	"data/js/chrome/FeatureBeeClientInterface.js",
 	"data/img/logo.png",
 	"data/img/help.png"
   ]

@@ -65,6 +65,8 @@
     <Content Include="data\img\bee_48.png" />
     <Content Include="data\img\help.png" />
     <Content Include="data\img\logo.png" />
+    <Content Include="data\js\chrome\FeatureBeeClientInterface.js" />
+    <Content Include="data\js\firefox\FeatureBeeClientInterface.js" />
     <Content Include="data\js\Presenter.js" />
     <Content Include="data\js\Repository.js" />
     <Content Include="lib\main.js" />
