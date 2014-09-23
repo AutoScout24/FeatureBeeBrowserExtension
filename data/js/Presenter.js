@@ -1,6 +1,8 @@
 ﻿var Presenter = function () {
 
     var _this = this;
+    _this.lastFilterValue = '';
+    
     var $file = function (relPath) {
         relPath = "data/" + relPath;
         return FeatureBeeClientInterface.getExtensionPath(relPath);
@@ -50,6 +52,17 @@
         textBox.textContent = text;
         return textBox;
     };
+
+    function filterValues(boxToFilter, filterValue) {
+        for (var i = 0; i < boxToFilter.childNodes.length; i++) {
+            var child = boxToFilter.childNodes[i];
+            var childValue = child.getAttribute('data-filter');
+            if (childValue && childValue != '') {
+                var matches = childValue.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0;
+                child.style.display = matches ? "block" : "none";
+            }
+        }
+    }
 
     this.init = function() {
 // ReSharper disable UnusedLocals
@@ -137,6 +150,8 @@
                     boxContent.appendChild(this.createToggle(toggles[i], false));
                 }
 
+                filterValues(boxContent, _this.lastFilterValue);
+                
                 return box;
             },
 
@@ -147,20 +162,16 @@
                 input.type = 'text';
                 input.placeholder = ' Enter your filter criteria';
                 input.className = 'inputFilter';
+                input.value = _this.lastFilterValue || '';
                 input.addEventListener('keyup', function () {
                     var filterValue = input.value;
-                    for (var i = 0; i < boxToFilter.childNodes.length; i++) {
-                        var child = boxToFilter.childNodes[i];
-                        var childValue = child.getAttribute('data-filter');
-                        if (childValue && childValue != '') {
-                            var matches = childValue.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0;
-                            child.style.display = matches ? "block" : "none";
-                        }
-                    }
+                    _this.lastFilterValue = filterValue;
+                    filterValues(boxToFilter, filterValue);
                 });
 
                 container.appendChild($$text("Filter:"));
                 container.appendChild(input);
+
                 return container;
             },
 
