@@ -279,6 +279,32 @@
             }
         },
 
+        actions: {
+
+            create:function(label, imgPath, actionDelegate){
+                var actionButton = $div("toggleButton actionButton");
+                actionButton.appendChild($img(imgPath, 'actionButtonImage'));
+                actionButton.appendChild($$text(label));
+
+                actionButton.addEventListener('click', function () {
+                    actionDelegate();
+                });
+
+                return actionButton;
+            },
+
+            build: function(){
+                var actionContainer = $div('actionContainer');
+                var exportButton = this.create("Export Current Configuration", 'img/bt_export.png', alert);
+                var openSmartphoneButton = this.create("Open in Smartphone", 'img/bt_smartphone.png', alert);
+
+                actionContainer.appendChild(exportButton);
+                actionContainer.appendChild(openSmartphoneButton);
+
+                return actionContainer;
+            }
+        },
+
         help: {
             build: function () {
                 var box = $$box('How does it work?')
@@ -321,7 +347,8 @@
 
         mainContentArea : function () {
             var maincontentarea = $div('maincontentarea');
-            maincontentarea.appendChild(this.toggles.buildMyToggles());
+            maincontentarea.appendChild(this.actions.build());
+            maincontentarea.appendChild(this.toggles.buildMyToggles());            
             maincontentarea.appendChild(this.toggles.buildOtherAvailableToggles());
             return maincontentarea;
         },
