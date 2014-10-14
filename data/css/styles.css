@@ -275,7 +275,7 @@ featurebeeextension .toggleActionItem:hover{
 }
 
 featurebeeextension .actionContainer{
-    padding: 0px 6px 12px 6px;
+    padding: 15px 6px 12px 6px;
     font-size: 0.9rem;
 }
 
@@ -298,6 +298,42 @@ featurebeeextension .actionButtonImage{
     display: inline-block;
     vertical-align: middle;
 }
+
+featurebeeextension .actionContentDisplayArea:empty{
+    display: none;
+}
+
+featurebeeextension .actionContentDisplayArea:not(:empty){    
+    background-color: lightgoldenrodyellow;
+    display:block;
+    -webkit-transition: all 2s linear; /* Firefox */
+    -moz-transition: all 2s linear; /* WebKit */
+    -o-transition: all 2s linear; /* Opera */
+    transition: all 2s linear; /* Standard */
+}
+
+featurebeeextension .actionContentTitle{
+    font-size: 1.3rem;
+    font-weight: bold;
+    padding: 5px 0 20px 0;
+}
+
+featurebeeextension .actionPs{
+    font-style: italic;
+    padding-top: 10px;
+}
+
+featurebeeextension .actionContentLink, featurebeeextension .actionContentLink:hover, featurebeeextension .actionContentLink:visited{
+    font-size: 1rem;
+    font-style: italic;
+}
+
+featurebeeextension .actionContentText{
+    font-size: 1rem;
+    display: block;
+    padding-bottom: 6px;
+}
+
 
 @media (max-width: 1250px) { 
     featurebeeextension .content{

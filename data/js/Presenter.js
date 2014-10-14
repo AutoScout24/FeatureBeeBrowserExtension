@@ -293,16 +293,66 @@
                 return actionButton;
             },
 
+            contentDisplayArea: function () {
+                var cont = $div('box boxcontent actionContentDisplayArea');
+                cont.setAttribute('data-action-content', '');
+                return cont;
+            },
+
             build: function(){
                 var actionContainer = $div('actionContainer');
-                var exportButton = this.create("Export Current Configuration", 'img/bt_export.png', alert);
-                var openSmartphoneButton = this.create("Open in Smartphone", 'img/bt_smartphone.png', alert);
+                var exportButton = this.create("Export Current Configuration", 'img/bt_export.png', _this.view.actions.export);
+                var openSmartphoneButton = this.create("Open in Smartphone", 'img/bt_smartphone.png', _this.view.actions.openSmartphone);
 
                 actionContainer.appendChild(exportButton);
                 actionContainer.appendChild(openSmartphoneButton);
 
                 return actionContainer;
-            }
+            },
+
+            setContent: function (title, explanation, divContent) {
+                var cont = document.querySelector('featurebeeextension [data-action-content]');                
+                
+                while (cont.firstChild) {
+                    cont.removeChild(cont.firstChild);
+                }
+
+                var titleObj = $div('actionContentTitle');
+                titleObj.textContent = title;
+
+                var explanationObj = $div('actionContentText');
+                explanationObj.textContent = explanation;
+
+                var ps = $div('actionPs');
+                ps.textContent = 'PS: This feature requires at least FeatureBeeClient version 0.2.0-CI2086';
+
+                cont.appendChild(titleObj);
+                cont.appendChild(explanationObj);
+                cont.appendChild(divContent);
+                cont.appendChild(ps);
+            },
+
+            getLink: function () {
+                return window.location.href + (window.location.href.indexOf('?') < 0 ? '?' : '&') + 'FeatureBee=' + repository.getFeatureBeeCookieValue() + '&FB_persist=true';
+            },
+
+            'export': function () {
+                var link = _this.view.actions.getLink();
+                var linkObj = $a(link, link);
+                linkObj.className = 'actionContentLink';
+
+                _this.view.actions.setContent('▶ Export Current Configuration', 'Copy and paste this url into the destination browser:', linkObj);
+            },
+
+            openSmartphone: function () {
+                var link = _this.view.actions.getLink();
+                var img = document.createElement("img");
+                img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(link);
+                var div = $div();
+                div.appendChild(img);
+
+                _this.view.actions.setContent('▶ Open Current URL in Smartphone', 'Scan the following QR-Code to access the current URL using the current toggle configuration:', div);
+            },
         },
 
         help: {
@@ -348,6 +398,7 @@
         mainContentArea : function () {
             var maincontentarea = $div('maincontentarea');
             maincontentarea.appendChild(this.actions.build());
+            maincontentarea.appendChild(this.actions.contentDisplayArea());
             maincontentarea.appendChild(this.toggles.buildMyToggles());            
             maincontentarea.appendChild(this.toggles.buildOtherAvailableToggles());
             return maincontentarea;
