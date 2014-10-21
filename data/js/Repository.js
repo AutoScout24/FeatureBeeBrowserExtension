@@ -173,4 +173,8 @@
 
         this.save(savedToggles);
     };
+
+    this.getFeatureBeeCookieValue = function () {
+        return getCookie("featureBee");
+    }
 };

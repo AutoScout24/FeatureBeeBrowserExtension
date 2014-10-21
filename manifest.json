@@ -1,6 +1,6 @@
 {
   "name": "Feature Bee Extension",
-  "version": "0.6.4",
+  "version": "0.7",
   "description": "A chrome extension to support the using of FeatureBee",
   "permissions": [
 	"tabs",
@@ -31,6 +31,8 @@
 	"data/js/Repository.js",
 	"data/js/chrome/FeatureBeeClientInterface.js",
 	"data/img/logo.png",
-	"data/img/help.png"
+	"data/img/help.png",
+	"data/img/bt_export.png",
+	"data/img/bt_smartphone.png"
   ]
 }
